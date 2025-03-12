@@ -1,5 +1,5 @@
 let
-  pkgs = import (fetchTarball("https://github.com/NixOS/nixpkgs/archive/nixos-23.11.tar.gz")) {};
+  pkgs = import (fetchTarball("https://github.com/NixOS/nixpkgs/archive/cca4f8e59e9479ced4f02f33530be367220d5826.tar.gz")) {};
 in
 pkgs.mkShell {
   packages = [

@@ -26,7 +26,8 @@ main =
 
 type alias Model =
     { oneIn : Float
-    , d20 : Float
+    , d20Whole : String
+    , d20Remainder : String
     , dice : Float
     , coin : Float
     }
@@ -35,7 +36,8 @@ type alias Model =
 init : () -> ( Model, Cmd Msg )
 init _ =
     (   { oneIn = irToOneIn initialInterRep
-        , d20 = irToD20 initialInterRep
+        , d20Whole = ""
+        , d20Remainder = ""
         , dice = irToDice initialInterRep
         , coin = irToCoin initialInterRep
         }
@@ -59,10 +61,28 @@ oneInToIr num =
 irToD20 : Float -> Float
 irToD20 num =
     logBase 20 num
+
+
+d20ToWhole : Float -> String 
+d20ToWhole num =
+    floor num
+    |> String.fromInt
     
+
+d20ToRemainder : Float -> Float -> String 
+d20ToRemainder oneIn d20 =
+    let
+        whole = floor d20
+        remainder = (floor oneIn) - (20^whole)
+    in
+        String.fromInt remainder
+
+    
+
 irToDice : Float -> Float
 irToDice num =
     logBase 6 num    
+
 
 irToCoin : Float -> Float
 irToCoin num =
@@ -88,14 +108,13 @@ update msg model =
                         0.0
                 newIr = oneInToIr newOneIn
                 newD20 = irToD20 newIr
-                newDice = irToDice newIr
-                newCoin = irToCoin newIr
+                newD20Whole = d20ToWhole newD20
+                newD20Remainder = d20ToRemainder newOneIn newD20
             in
             ( { model
             | oneIn = newOneIn
-            , d20 = newD20
-            , dice = newDice
-            , coin = newCoin
+            , d20Whole = newD20Whole
+            , d20Remainder = newD20Remainder
             }, Cmd.none )
 
 
@@ -121,7 +140,7 @@ view model =
                 , input [ value <| String.fromFloat model.oneIn, onInput ChangeOneIn] []
                 , p [] [ text <| String.fromFloat model.oneIn ]
                 , h3 [] [ text "D20" ]
-                , p [] [ text <| String.fromFloat model.d20 ]
+                , p [] [ text <| model.d20Whole ++ " 20's in a row and a roll greater than " ++ model.d20Remainder ]
                 , h3 [] [ text "Dice" ]
                 , p [] [ text <| String.fromFloat model.dice ]
                 , h3 [] [ text "Coinflips" ]

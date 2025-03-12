@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.U.D === region.ab.D)
+	if (region.V.D === region.ac.D)
 	{
-		return 'on line ' + region.U.D;
+		return 'on line ' + region.V.D;
 	}
-	return 'on lines ' + region.U.D + ' through ' + region.ab.D;
+	return 'on lines ' + region.V.D + ' through ' + region.ac.D;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a1,
-		impl.bi,
-		impl.bf,
+		impl.a2,
+		impl.bj,
+		impl.bg,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		s: func(record.s),
-		V: record.V,
-		R: record.R
+		W: record.W,
+		S: record.S
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.s;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.V;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.W;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.R) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.S) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a1,
-		impl.bi,
-		impl.bf,
+		impl.a2,
+		impl.bj,
+		impl.bg,
 		function(sendToApp, initialModel) {
-			var view = impl.bj;
+			var view = impl.bk;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a1,
-		impl.bi,
-		impl.bf,
+		impl.a2,
+		impl.bj,
+		impl.bg,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.T && impl.T(sendToApp)
-			var view = impl.bj;
+			var divertHrefToApp = impl.U && impl.U(sendToApp)
+			var view = impl.bk;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aU);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aV);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bh) && (_VirtualDom_doc.title = title = doc.bh);
+				(title !== doc.bi) && (_VirtualDom_doc.title = title = doc.bi);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a6;
-	var onUrlRequest = impl.a7;
+	var onUrlChange = impl.a7;
+	var onUrlRequest = impl.a8;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		T: function(sendToApp)
+		U: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aw === next.aw
-							&& curr.aj === next.aj
-							&& curr.as.a === next.as.a
+							&& curr.ax === next.ax
+							&& curr.ak === next.ak
+							&& curr.at.a === next.at.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a1: function(flags)
+		a2: function(flags)
 		{
-			return A3(impl.a1, flags, _Browser_getUrl(), key);
+			return A3(impl.a2, flags, _Browser_getUrl(), key);
 		},
+		bk: impl.bk,
 		bj: impl.bj,
-		bi: impl.bi,
-		bf: impl.bf
+		bg: impl.bg
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a_: 'hidden', aV: 'visibilitychange' }
+		? { a$: 'hidden', aW: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a_: 'mozHidden', aV: 'mozvisibilitychange' }
+		? { a$: 'mozHidden', aW: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a_: 'msHidden', aV: 'msvisibilitychange' }
+		? { a$: 'msHidden', aW: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a_: 'webkitHidden', aV: 'webkitvisibilitychange' }
-		: { a_: 'hidden', aV: 'visibilitychange' };
+		? { a$: 'webkitHidden', aW: 'webkitvisibilitychange' }
+		: { a$: 'hidden', aW: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aE: _Browser_getScene(),
-		aM: {
-			aO: _Browser_window.pageXOffset,
-			aP: _Browser_window.pageYOffset,
-			aN: _Browser_doc.documentElement.clientWidth,
-			ah: _Browser_doc.documentElement.clientHeight
+		aF: _Browser_getScene(),
+		aN: {
+			aP: _Browser_window.pageXOffset,
+			aQ: _Browser_window.pageYOffset,
+			aO: _Browser_doc.documentElement.clientWidth,
+			ai: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aN: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ah: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aO: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ai: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aE: {
-				aN: node.scrollWidth,
-				ah: node.scrollHeight
+			aF: {
+				aO: node.scrollWidth,
+				ai: node.scrollHeight
 			},
-			aM: {
-				aO: node.scrollLeft,
-				aP: node.scrollTop,
-				aN: node.clientWidth,
-				ah: node.clientHeight
+			aN: {
+				aP: node.scrollLeft,
+				aQ: node.scrollTop,
+				aO: node.clientWidth,
+				ai: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aE: _Browser_getScene(),
-			aM: {
-				aO: x,
-				aP: y,
-				aN: _Browser_doc.documentElement.clientWidth,
-				ah: _Browser_doc.documentElement.clientHeight
+			aF: _Browser_getScene(),
+			aN: {
+				aP: x,
+				aQ: y,
+				aO: _Browser_doc.documentElement.clientWidth,
+				ai: _Browser_doc.documentElement.clientHeight
 			},
-			aY: {
-				aO: x + rect.left,
-				aP: y + rect.top,
-				aN: rect.width,
-				ah: rect.height
+			aZ: {
+				aP: x + rect.left,
+				aQ: y + rect.top,
+				aO: rect.width,
+				ai: rect.height
 			}
 		};
 	});
@@ -4874,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {af: fragment, aj: host, aq: path, as: port_, aw: protocol, ax: query};
+		return {ag: fragment, ak: host, ar: path, at: port_, ax: protocol, ay: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5157,9 +5157,6 @@ var $author$project$Main$initialInterRep = 0.01;
 var $author$project$Main$irToCoin = function (num) {
 	return A2($elm$core$Basics$logBase, 2, num);
 };
-var $author$project$Main$irToD20 = function (num) {
-	return A2($elm$core$Basics$logBase, 20, num);
-};
 var $author$project$Main$irToDice = function (num) {
 	return A2($elm$core$Basics$logBase, 6, num);
 };
@@ -5171,9 +5168,10 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
-			J: $author$project$Main$irToCoin($author$project$Main$initialInterRep),
-			K: $author$project$Main$irToD20($author$project$Main$initialInterRep),
-			L: $author$project$Main$irToDice($author$project$Main$initialInterRep),
+			M: $author$project$Main$irToCoin($author$project$Main$initialInterRep),
+			J: '',
+			K: '',
+			N: $author$project$Main$irToDice($author$project$Main$initialInterRep),
 			E: $author$project$Main$irToOneIn($author$project$Main$initialInterRep)
 		},
 		$elm$core$Platform$Cmd$none);
@@ -5182,6 +5180,20 @@ var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
+};
+var $elm$core$Basics$pow = _Basics_pow;
+var $author$project$Main$d20ToRemainder = F2(
+	function (oneIn, d20) {
+		var whole = $elm$core$Basics$floor(d20);
+		var remainder = $elm$core$Basics$floor(oneIn) - A2($elm$core$Basics$pow, 20, whole);
+		return $elm$core$String$fromInt(remainder);
+	});
+var $author$project$Main$d20ToWhole = function (num) {
+	return $elm$core$String$fromInt(
+		$elm$core$Basics$floor(num));
+};
+var $author$project$Main$irToD20 = function (num) {
+	return A2($elm$core$Basics$logBase, 20, num);
 };
 var $author$project$Main$oneInToIr = function (num) {
 	return num;
@@ -5200,13 +5212,13 @@ var $author$project$Main$update = F2(
 			}
 		}();
 		var newIr = $author$project$Main$oneInToIr(newOneIn);
-		var newDice = $author$project$Main$irToDice(newIr);
 		var newD20 = $author$project$Main$irToD20(newIr);
-		var newCoin = $author$project$Main$irToCoin(newIr);
+		var newD20Remainder = A2($author$project$Main$d20ToRemainder, newOneIn, newD20);
+		var newD20Whole = $author$project$Main$d20ToWhole(newD20);
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{J: newCoin, K: newD20, L: newDice, E: newOneIn}),
+				{J: newD20Remainder, K: newD20Whole, E: newOneIn}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $author$project$Main$ChangeOneIn = $elm$core$Basics$identity;
@@ -5335,8 +5347,7 @@ var $author$project$Main$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.K))
+										$elm$html$Html$text(model.K + (' 20\'s in a row and a roll greater than ' + model.J))
 									])),
 								A2(
 								$elm$html$Html$h3,
@@ -5351,7 +5362,7 @@ var $author$project$Main$view = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.L))
+										$elm$core$String$fromFloat(model.N))
 									])),
 								A2(
 								$elm$html$Html$h3,
@@ -5366,13 +5377,13 @@ var $author$project$Main$view = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.J))
+										$elm$core$String$fromFloat(model.M))
 									]))
 							]))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{a1: $author$project$Main$init, bf: $author$project$Main$subscriptions, bi: $author$project$Main$update, bj: $author$project$Main$view});
+	{a2: $author$project$Main$init, bg: $author$project$Main$subscriptions, bj: $author$project$Main$update, bk: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
