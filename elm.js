@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.S.E === region._.E)
+	if (region.U.D === region.ab.D)
 	{
-		return 'on line ' + region.S.E;
+		return 'on line ' + region.U.D;
 	}
-	return 'on lines ' + region.S.E + ' through ' + region._.E;
+	return 'on lines ' + region.U.D + ' through ' + region.ab.D;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a$,
-		impl.bg,
-		impl.bd,
+		impl.a1,
+		impl.bi,
+		impl.bf,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		t: func(record.t),
-		T: record.T,
-		O: record.O
+		s: func(record.s),
+		V: record.V,
+		R: record.R
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.t;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.T;
+		var message = !tag ? value : tag < 3 ? value.a : value.s;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.V;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.O) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.R) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a$,
-		impl.bg,
-		impl.bd,
+		impl.a1,
+		impl.bi,
+		impl.bf,
 		function(sendToApp, initialModel) {
-			var view = impl.bh;
+			var view = impl.bj;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a$,
-		impl.bg,
-		impl.bd,
+		impl.a1,
+		impl.bi,
+		impl.bf,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.R && impl.R(sendToApp)
-			var view = impl.bh;
+			var divertHrefToApp = impl.T && impl.T(sendToApp)
+			var view = impl.bj;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aS);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aU);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bf) && (_VirtualDom_doc.title = title = doc.bf);
+				(title !== doc.bh) && (_VirtualDom_doc.title = title = doc.bh);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a4;
-	var onUrlRequest = impl.a5;
+	var onUrlChange = impl.a6;
+	var onUrlRequest = impl.a7;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		R: function(sendToApp)
+		T: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.au === next.au
-							&& curr.ah === next.ah
-							&& curr.aq.a === next.aq.a
+							&& curr.aw === next.aw
+							&& curr.aj === next.aj
+							&& curr.as.a === next.as.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a$: function(flags)
+		a1: function(flags)
 		{
-			return A3(impl.a$, flags, _Browser_getUrl(), key);
+			return A3(impl.a1, flags, _Browser_getUrl(), key);
 		},
-		bh: impl.bh,
-		bg: impl.bg,
-		bd: impl.bd
+		bj: impl.bj,
+		bi: impl.bi,
+		bf: impl.bf
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aY: 'hidden', aT: 'visibilitychange' }
+		? { a_: 'hidden', aV: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aY: 'mozHidden', aT: 'mozvisibilitychange' }
+		? { a_: 'mozHidden', aV: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aY: 'msHidden', aT: 'msvisibilitychange' }
+		? { a_: 'msHidden', aV: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aY: 'webkitHidden', aT: 'webkitvisibilitychange' }
-		: { aY: 'hidden', aT: 'visibilitychange' };
+		? { a_: 'webkitHidden', aV: 'webkitvisibilitychange' }
+		: { a_: 'hidden', aV: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aC: _Browser_getScene(),
-		aK: {
-			aM: _Browser_window.pageXOffset,
-			aN: _Browser_window.pageYOffset,
-			aL: _Browser_doc.documentElement.clientWidth,
-			af: _Browser_doc.documentElement.clientHeight
+		aE: _Browser_getScene(),
+		aM: {
+			aO: _Browser_window.pageXOffset,
+			aP: _Browser_window.pageYOffset,
+			aN: _Browser_doc.documentElement.clientWidth,
+			ah: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aL: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		af: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aN: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ah: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aC: {
-				aL: node.scrollWidth,
-				af: node.scrollHeight
+			aE: {
+				aN: node.scrollWidth,
+				ah: node.scrollHeight
 			},
-			aK: {
-				aM: node.scrollLeft,
-				aN: node.scrollTop,
-				aL: node.clientWidth,
-				af: node.clientHeight
+			aM: {
+				aO: node.scrollLeft,
+				aP: node.scrollTop,
+				aN: node.clientWidth,
+				ah: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aC: _Browser_getScene(),
-			aK: {
-				aM: x,
-				aN: y,
-				aL: _Browser_doc.documentElement.clientWidth,
-				af: _Browser_doc.documentElement.clientHeight
+			aE: _Browser_getScene(),
+			aM: {
+				aO: x,
+				aP: y,
+				aN: _Browser_doc.documentElement.clientWidth,
+				ah: _Browser_doc.documentElement.clientHeight
 			},
-			aW: {
-				aM: x + rect.left,
-				aN: y + rect.top,
-				aL: rect.width,
-				af: rect.height
+			aY: {
+				aO: x + rect.left,
+				aP: y + rect.top,
+				aN: rect.width,
+				ah: rect.height
 			}
 		};
 	});
@@ -4370,43 +4370,6 @@ function _Browser_load(url)
 		}
 	}));
 }
-
-
-
-var _Bitwise_and = F2(function(a, b)
-{
-	return a & b;
-});
-
-var _Bitwise_or = F2(function(a, b)
-{
-	return a | b;
-});
-
-var _Bitwise_xor = F2(function(a, b)
-{
-	return a ^ b;
-});
-
-function _Bitwise_complement(a)
-{
-	return ~a;
-};
-
-var _Bitwise_shiftLeftBy = F2(function(offset, a)
-{
-	return a << offset;
-});
-
-var _Bitwise_shiftRightBy = F2(function(offset, a)
-{
-	return a >> offset;
-});
-
-var _Bitwise_shiftRightZfBy = F2(function(offset, a)
-{
-	return a >>> offset;
-});
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4911,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ad: fragment, ah: host, ao: path, aq: port_, au: protocol, av: query};
+		return {af: fragment, aj: host, aq: path, as: port_, aw: protocol, ax: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5190,14 +5153,28 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
+var $author$project$Main$initialInterRep = 0.01;
+var $author$project$Main$irToCoin = function (num) {
+	return A2($elm$core$Basics$logBase, 2, num);
+};
+var $author$project$Main$irToD20 = function (num) {
+	return A2($elm$core$Basics$logBase, 20, num);
+};
+var $author$project$Main$irToDice = function (num) {
+	return A2($elm$core$Basics$logBase, 6, num);
+};
+var $author$project$Main$irToOneIn = function (num) {
+	return num;
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
 		{
-			s: _List_fromArray(
-				[0.0]),
-			Q: 0.0
+			J: $author$project$Main$irToCoin($author$project$Main$initialInterRep),
+			K: $author$project$Main$irToD20($author$project$Main$initialInterRep),
+			L: $author$project$Main$irToDice($author$project$Main$initialInterRep),
+			E: $author$project$Main$irToOneIn($author$project$Main$initialInterRep)
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -5206,75 +5183,33 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Main$calculateNext = F2(
-	function (prev, ratio) {
-		var sum = prev + ratio;
-		return sum - $elm$core$Basics$floor(sum);
-	});
-var $elm$core$Basics$sqrt = _Basics_sqrt;
-var $author$project$Main$goldenRatio = (1 + $elm$core$Basics$sqrt(5)) / 2;
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
+var $author$project$Main$oneInToIr = function (num) {
+	return num;
 };
-var $elm$core$List$tail = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(xs);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
+var $elm$core$String$toFloat = _String_toFloat;
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (!msg) {
-			var nextGoldenRatioValue = function () {
-				var _v1 = $elm$core$List$head(model.s);
-				if (!_v1.$) {
-					var value = _v1.a;
-					return A2($author$project$Main$calculateNext, value, $author$project$Main$goldenRatio);
-				} else {
-					return model.Q;
-				}
-			}();
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						s: _Utils_ap(
-							_List_fromArray(
-								[nextGoldenRatioValue]),
-							model.s)
-					}),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						s: function () {
-							var _v2 = $elm$core$List$tail(model.s);
-							if (!_v2.$) {
-								var tailValues = _v2.a;
-								return tailValues;
-							} else {
-								return _List_Nil;
-							}
-						}()
-					}),
-				$elm$core$Platform$Cmd$none);
-		}
+		var newNumber = msg;
+		var newOneIn = function () {
+			var _v1 = $elm$core$String$toFloat(newNumber);
+			if (!_v1.$) {
+				var num = _v1.a;
+				return num;
+			} else {
+				return 0.0;
+			}
+		}();
+		var newIr = $author$project$Main$oneInToIr(newOneIn);
+		var newDice = $author$project$Main$irToDice(newIr);
+		var newD20 = $author$project$Main$irToD20(newIr);
+		var newCoin = $author$project$Main$irToCoin(newIr);
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{J: newCoin, K: newD20, L: newDice, E: newOneIn}),
+			$elm$core$Platform$Cmd$none);
 	});
-var $author$project$Main$IncrementColors = 0;
-var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
-var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
+var $author$project$Main$ChangeOneIn = $elm$core$Basics$identity;
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5284,279 +5219,51 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$core$String$fromFloat = _String_fromNumber;
-var $elm$core$Basics$clamp = F3(
-	function (low, high, number) {
-		return (_Utils_cmp(number, low) < 0) ? low : ((_Utils_cmp(number, high) > 0) ? high : number);
-	});
-var $escherlies$elm_color$Color$Utils$clamp01 = A2($elm$core$Basics$clamp, 0, 1);
-var $escherlies$elm_color$Color$Utils$fractionalModBy = F2(
-	function (modulus, x) {
-		return x - (modulus * $elm$core$Basics$floor(x / modulus));
-	});
-var $elm$core$Basics$min = F2(
-	function (x, y) {
-		return (_Utils_cmp(x, y) < 0) ? x : y;
-	});
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
-var $escherlies$elm_color$Color$Internal$Rgba = F4(
-	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
-	});
-var $escherlies$elm_color$Color$Internal$rgba = F4(
-	function (r, g, b, a) {
-		return A4(
-			$escherlies$elm_color$Color$Internal$Rgba,
-			$escherlies$elm_color$Color$Utils$clamp01(r),
-			$escherlies$elm_color$Color$Utils$clamp01(g),
-			$escherlies$elm_color$Color$Utils$clamp01(b),
-			$escherlies$elm_color$Color$Utils$clamp01(a));
-	});
-var $escherlies$elm_color$Color$Hsl$hsla = F4(
-	function (hue, saturation, lightness, alpha) {
-		var s = $escherlies$elm_color$Color$Utils$clamp01(saturation);
-		var l = $escherlies$elm_color$Color$Utils$clamp01(lightness);
-		var h = A2($escherlies$elm_color$Color$Utils$fractionalModBy, 360, hue);
-		var f = function (n) {
-			var k = A2($escherlies$elm_color$Color$Utils$fractionalModBy, 12, n + (h / 30));
-			var a = s * A2($elm$core$Basics$min, l, 1 - l);
-			return l - (a * A2(
-				$elm$core$Basics$max,
-				-1,
-				A2(
-					$elm$core$Basics$min,
-					k - 3,
-					A2($elm$core$Basics$min, 9 - k, 1))));
-		};
-		return A4(
-			$escherlies$elm_color$Color$Internal$rgba,
-			f(0),
-			f(8),
-			f(4),
-			alpha);
-	});
-var $escherlies$elm_color$Color$Hsl$hsl = F3(
-	function (h, s, l) {
-		return A4($escherlies$elm_color$Color$Hsl$hsla, h, s, l, 1);
-	});
-var $escherlies$elm_color$Color$hsl = $escherlies$elm_color$Color$Hsl$hsl;
-var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
-var $elm$svg$Svg$Attributes$strokeLinecap = _VirtualDom_attribute('stroke-linecap');
-var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
-var $elm$core$Basics$composeL = F3(
-	function (g, f, x) {
-		return g(
-			f(x));
-	});
-var $elm$core$String$concat = function (strings) {
-	return A2($elm$core$String$join, '', strings);
-};
-var $escherlies$elm_color$Color$Hex$dropAlpha = function (rgbas) {
-	if ((((rgbas.b && rgbas.b.b) && rgbas.b.b.b) && rgbas.b.b.b.b) && (!rgbas.b.b.b.b.b)) {
-		var r = rgbas.a;
-		var _v1 = rgbas.b;
-		var g = _v1.a;
-		var _v2 = _v1.b;
-		var b = _v2.a;
-		var _v3 = _v2.b;
-		var a = _v3.a;
-		return (a === 255) ? _List_fromArray(
-			[r, g, b]) : rgbas;
-	} else {
-		return rgbas;
-	}
-};
-var $elm$core$String$cons = _String_cons;
-var $elm$core$String$fromChar = function (_char) {
-	return A2($elm$core$String$cons, _char, '');
-};
-var $elm$core$Bitwise$and = _Bitwise_and;
-var $elm$core$Bitwise$shiftRightBy = _Bitwise_shiftRightBy;
-var $elm$core$String$repeatHelp = F3(
-	function (n, chunk, result) {
-		return (n <= 0) ? result : A3(
-			$elm$core$String$repeatHelp,
-			n >> 1,
-			_Utils_ap(chunk, chunk),
-			(!(n & 1)) ? result : _Utils_ap(result, chunk));
-	});
-var $elm$core$String$repeat = F2(
-	function (n, chunk) {
-		return A3($elm$core$String$repeatHelp, n, chunk, '');
-	});
-var $elm$core$String$padLeft = F3(
-	function (n, _char, string) {
-		return _Utils_ap(
-			A2(
-				$elm$core$String$repeat,
-				n - $elm$core$String$length(string),
-				$elm$core$String$fromChar(_char)),
-			string);
-	});
-var $elm$core$Basics$round = _Basics_round;
-var $escherlies$elm_color$Color$Hex$toRgba255List = function (_v0) {
-	var r = _v0.a;
-	var g = _v0.b;
-	var b = _v0.c;
-	var a = _v0.d;
-	return _List_fromArray(
-		[
-			$elm$core$Basics$round(r * 255),
-			$elm$core$Basics$round(g * 255),
-			$elm$core$Basics$round(b * 255),
-			$elm$core$Basics$round(a * 255)
-		]);
-};
-var $elm$core$String$fromList = _String_fromList;
-var $elm$core$Basics$modBy = _Basics_modBy;
-var $rtfeldman$elm_hex$Hex$unsafeToDigit = function (num) {
-	unsafeToDigit:
-	while (true) {
-		switch (num) {
-			case 0:
-				return '0';
-			case 1:
-				return '1';
-			case 2:
-				return '2';
-			case 3:
-				return '3';
-			case 4:
-				return '4';
-			case 5:
-				return '5';
-			case 6:
-				return '6';
-			case 7:
-				return '7';
-			case 8:
-				return '8';
-			case 9:
-				return '9';
-			case 10:
-				return 'a';
-			case 11:
-				return 'b';
-			case 12:
-				return 'c';
-			case 13:
-				return 'd';
-			case 14:
-				return 'e';
-			case 15:
-				return 'f';
-			default:
-				var $temp$num = num;
-				num = $temp$num;
-				continue unsafeToDigit;
-		}
-	}
-};
-var $rtfeldman$elm_hex$Hex$unsafePositiveToDigits = F2(
-	function (digits, num) {
-		unsafePositiveToDigits:
-		while (true) {
-			if (num < 16) {
-				return A2(
-					$elm$core$List$cons,
-					$rtfeldman$elm_hex$Hex$unsafeToDigit(num),
-					digits);
-			} else {
-				var $temp$digits = A2(
-					$elm$core$List$cons,
-					$rtfeldman$elm_hex$Hex$unsafeToDigit(
-						A2($elm$core$Basics$modBy, 16, num)),
-					digits),
-					$temp$num = (num / 16) | 0;
-				digits = $temp$digits;
-				num = $temp$num;
-				continue unsafePositiveToDigits;
-			}
-		}
-	});
-var $rtfeldman$elm_hex$Hex$toString = function (num) {
-	return $elm$core$String$fromList(
-		(num < 0) ? A2(
-			$elm$core$List$cons,
-			'-',
-			A2($rtfeldman$elm_hex$Hex$unsafePositiveToDigits, _List_Nil, -num)) : A2($rtfeldman$elm_hex$Hex$unsafePositiveToDigits, _List_Nil, num));
-};
-var $escherlies$elm_color$Color$Hex$toHexString = A2(
-	$elm$core$Basics$composeL,
-	A2(
-		$elm$core$Basics$composeL,
-		A2(
-			$elm$core$Basics$composeL,
-			$elm$core$String$concat,
-			$elm$core$List$map(
-				A2(
-					$elm$core$Basics$composeL,
-					A2($elm$core$String$padLeft, 2, '0'),
-					$rtfeldman$elm_hex$Hex$toString))),
-		$escherlies$elm_color$Color$Hex$dropAlpha),
-	$escherlies$elm_color$Color$Hex$toRgba255List);
-var $escherlies$elm_color$Color$Hex$toCssString = function (s) {
-	return '#' + $escherlies$elm_color$Color$Hex$toHexString(s);
-};
-var $escherlies$elm_color$Color$toCssString = $escherlies$elm_color$Color$Hex$toCssString;
-var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
-var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
-var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
-var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
-var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
-var $author$project$Main$colorDialIndicator = function (n) {
-	return A2(
-		$elm$svg$Svg$line,
-		_List_fromArray(
-			[
-				$elm$svg$Svg$Attributes$x1('180'),
-				$elm$svg$Svg$Attributes$y1('180'),
-				$elm$svg$Svg$Attributes$x2('180'),
-				$elm$svg$Svg$Attributes$y2('14'),
-				$elm$svg$Svg$Attributes$stroke(
-				$escherlies$elm_color$Color$toCssString(
-					A3($escherlies$elm_color$Color$hsl, n * 360.0, 0.99, 0.5))),
-				$elm$svg$Svg$Attributes$strokeWidth('8'),
-				$elm$svg$Svg$Attributes$strokeLinecap('round'),
-				$elm$svg$Svg$Attributes$transform(
-				'rotate(' + ($elm$core$String$fromFloat(n * 360.0) + ' 180 180)'))
-			]),
-		_List_Nil);
-};
-var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
-var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
-var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
+var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 1, a: a};
 };
 var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
+var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
 		return A2(
 			$elm$virtual_dom$VirtualDom$on,
 			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
 	});
-var $elm$html$Html$Events$onClick = function (msg) {
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
 	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
-var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5573,17 +5280,7 @@ var $author$project$Main$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Ratios')
-					])),
-				A2(
-				$elm$html$Html$button,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onClick(0)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Add a Color')
+						$elm$html$Html$text('Probabilities')
 					])),
 				A2(
 				$elm$html$Html$div,
@@ -5607,37 +5304,75 @@ var $author$project$Main$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Golden Ratio')
+										$elm$html$Html$text('1 in X')
 									])),
 								A2(
-								$elm$svg$Svg$svg,
+								$elm$html$Html$input,
 								_List_fromArray(
 									[
-										$elm$svg$Svg$Attributes$width('360'),
-										$elm$svg$Svg$Attributes$height('360'),
-										$elm$svg$Svg$Attributes$viewBox('0 0 360 360')
+										$elm$html$Html$Attributes$value(
+										$elm$core$String$fromFloat(model.E)),
+										$elm$html$Html$Events$onInput($elm$core$Basics$identity)
 									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$p,
+								_List_Nil,
 								_List_fromArray(
 									[
-										A2(
-										$elm$svg$Svg$circle,
-										_List_fromArray(
-											[
-												$elm$svg$Svg$Attributes$cx('180'),
-												$elm$svg$Svg$Attributes$cy('180'),
-												$elm$svg$Svg$Attributes$r('180')
-											]),
-										_List_Nil),
-										A2(
-										$elm$svg$Svg$svg,
-										_List_Nil,
-										A2($elm$core$List$map, $author$project$Main$colorDialIndicator, model.s))
+										$elm$html$Html$text(
+										$elm$core$String$fromFloat(model.E))
+									])),
+								A2(
+								$elm$html$Html$h3,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('D20')
+									])),
+								A2(
+								$elm$html$Html$p,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$elm$core$String$fromFloat(model.K))
+									])),
+								A2(
+								$elm$html$Html$h3,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Dice')
+									])),
+								A2(
+								$elm$html$Html$p,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$elm$core$String$fromFloat(model.L))
+									])),
+								A2(
+								$elm$html$Html$h3,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Coinflips')
+									])),
+								A2(
+								$elm$html$Html$p,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										$elm$core$String$fromFloat(model.J))
 									]))
 							]))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{a$: $author$project$Main$init, bd: $author$project$Main$subscriptions, bg: $author$project$Main$update, bh: $author$project$Main$view});
+	{a1: $author$project$Main$init, bf: $author$project$Main$subscriptions, bi: $author$project$Main$update, bj: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

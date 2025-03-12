@@ -28,67 +28,75 @@ type alias Model =
     { oneIn : Float
     , d20 : Float
     , dice : Float
+    , coin : Float
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { oneIn = 0.01
-      , 
-      }
+    (   { oneIn = irToOneIn initialInterRep
+        , d20 = irToD20 initialInterRep
+        , dice = irToDice initialInterRep
+        , coin = irToCoin initialInterRep
+        }
     , Cmd.none
     )
 
+initialInterRep : Float
+initialInterRep = 0.01
 
-oneInToD20 : 
+
+irToOneIn : Float -> Float
+irToOneIn num = 
+    num
+    
+
+oneInToIr : Float -> Float
+oneInToIr num = 
+    num
+    
+
+irToD20 : Float -> Float
+irToD20 num =
+    logBase 20 num
+    
+irToDice : Float -> Float
+irToDice num =
+    logBase 6 num    
+
+irToCoin : Float -> Float
+irToCoin num =
+    logBase 2 num    
 
 
 -- UPDATE
 
 
 type Msg
-    = IncrementColors
-    | DecrementColors
+    = ChangeOneIn String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        IncrementColors ->
+        ChangeOneIn newNumber ->
             let
-                nextGoldenRatioValue =
-                    case List.head model.goldenRatioValues of
-                        Just value ->
-                            calculateNext value goldenRatio
-
-                        Nothing ->
-                            model.seed
-
+                newOneIn = case String.toFloat newNumber of
+                    Just num ->
+                        num
+                    Nothing ->
+                        0.0
+                newIr = oneInToIr newOneIn
+                newD20 = irToD20 newIr
+                newDice = irToDice newIr
+                newCoin = irToCoin newIr
             in
-            ( { model | goldenRatioValues = [ nextGoldenRatioValue ] ++ model.goldenRatioValues }, Cmd.none )
-
-        DecrementColors ->
             ( { model
-                | goldenRatioValues =
-                    case List.tail model.goldenRatioValues of
-                        Just tailValues ->
-                            tailValues
-
-                        Nothing ->
-                            []
-              }
-            , Cmd.none
-            )
-
-
-calculateNext : Float -> Float -> Float
-calculateNext prev ratio =
-    let
-        sum =
-            prev + ratio
-    in
-    sum - (floor sum |> toFloat)
-
+            | oneIn = newOneIn
+            , d20 = newD20
+            , dice = newDice
+            , coin = newCoin
+            }, Cmd.none )
 
 
 -- SUBSCRIPTIONS
@@ -110,6 +118,14 @@ view model =
         , div [ class "col", style "flex-wrap" "wrap" ]
             [ div [ class "col" ]
                 [ h3 [] [ text "1 in X" ]
+                , input [ value <| String.fromFloat model.oneIn, onInput ChangeOneIn] []
+                , p [] [ text <| String.fromFloat model.oneIn ]
+                , h3 [] [ text "D20" ]
+                , p [] [ text <| String.fromFloat model.d20 ]
+                , h3 [] [ text "Dice" ]
+                , p [] [ text <| String.fromFloat model.dice ]
+                , h3 [] [ text "Coinflips" ]
+                , p [] [ text <| String.fromFloat model.coin ]
                 ]
             ]
         ]
