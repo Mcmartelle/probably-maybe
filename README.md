@@ -1,3 +1,3 @@
-# Elm Template
+# Probably
 
-With Browser.element and using a CSS file.
+Convert between probability representations.
