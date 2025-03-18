@@ -28,24 +28,36 @@ type alias Model =
     { oneIn : Float
     , d20Whole : String
     , d20Remainder : String
-    , dice : Float
+    , d6Whole : String
+    , d6Remainder : String
     , coin : Float
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
+    let
+        initOneIn = initialInterRep
+        initIr = oneInToIr initOneIn
+        initD20 = irToD20 initIr
+        initD20Whole = d20ToWhole initD20
+        initD20Remainder = d20ToRemainder initOneIn initD20
+        initD6 = irToD6 initIr
+        initD6Whole = d6ToWhole initD6
+        initD6Remainder = d6ToRemainder initOneIn initD6
+    in
     (   { oneIn = irToOneIn initialInterRep
-        , d20Whole = ""
-        , d20Remainder = ""
-        , dice = irToDice initialInterRep
+        , d20Whole = initD20Whole
+        , d20Remainder = initD20Remainder
+        , d6Whole = initD6Whole
+        , d6Remainder = initD6Remainder
         , coin = irToCoin initialInterRep
         }
     , Cmd.none
     )
 
 initialInterRep : Float
-initialInterRep = 0.01
+initialInterRep = 80.0
 
 
 irToOneIn : Float -> Float
@@ -71,16 +83,35 @@ d20ToWhole num =
 
 d20ToRemainder : Float -> Float -> String 
 d20ToRemainder oneIn d20 =
+        toRemainder 20 oneIn d20
+
+
+d6ToWhole : Float -> String 
+d6ToWhole num =
+    floor num
+    |> String.fromInt
+    
+
+d6ToRemainder : Float -> Float -> String 
+d6ToRemainder oneIn logVal =
+        toRemainder 6 oneIn logVal
+
+
+toRemainder : Float -> Float -> Float -> String 
+toRemainder diceTotal oneIn logVal =
     let
-        whole = floor d20
-        remainder = (floor oneIn) - (20^whole)
+        val = diceTotal
+        whole = floor logVal |> toFloat -- 1
+        remainderTotal = oneIn - (val^whole) -- 60
+        remainderFraction = remainderTotal / val -- 3
+        remainder = ceiling ((remainderTotal * val) / oneIn)
     in
         String.fromInt remainder
 
     
 
-irToDice : Float -> Float
-irToDice num =
+irToD6 : Float -> Float
+irToD6 num =
     logBase 6 num    
 
 
@@ -110,11 +141,16 @@ update msg model =
                 newD20 = irToD20 newIr
                 newD20Whole = d20ToWhole newD20
                 newD20Remainder = d20ToRemainder newOneIn newD20
+                newD6 = irToD6 newIr
+                newD6Whole = d6ToWhole newD6
+                newD6Remainder = d6ToRemainder newOneIn newD6
             in
             ( { model
             | oneIn = newOneIn
             , d20Whole = newD20Whole
             , d20Remainder = newD20Remainder
+            , d6Whole = newD6Whole
+            , d6Remainder = newD6Remainder
             }, Cmd.none )
 
 
@@ -142,7 +178,7 @@ view model =
                 , h3 [] [ text "D20" ]
                 , p [] [ text <| model.d20Whole ++ " 20's in a row and a roll greater than " ++ model.d20Remainder ]
                 , h3 [] [ text "Dice" ]
-                , p [] [ text <| String.fromFloat model.dice ]
+                , p [] [ text <| model.d6Whole ++ " 6's in a row and a roll greater than " ++ model.d6Remainder ]
                 , h3 [] [ text "Coinflips" ]
                 , p [] [ text <| String.fromFloat model.coin ]
                 ]

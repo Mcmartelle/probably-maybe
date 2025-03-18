@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.V.D === region.ac.D)
+	if (region.W.D === region.ad.D)
 	{
-		return 'on line ' + region.V.D;
+		return 'on line ' + region.W.D;
 	}
-	return 'on lines ' + region.V.D + ' through ' + region.ac.D;
+	return 'on lines ' + region.W.D + ' through ' + region.ad.D;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a2,
-		impl.bj,
-		impl.bg,
+		impl.a3,
+		impl.bk,
+		impl.bh,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		s: func(record.s),
-		W: record.W,
-		S: record.S
+		X: record.X,
+		T: record.T
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.s;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.W;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.X;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.S) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.T) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a2,
-		impl.bj,
-		impl.bg,
+		impl.a3,
+		impl.bk,
+		impl.bh,
 		function(sendToApp, initialModel) {
-			var view = impl.bk;
+			var view = impl.bl;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a2,
-		impl.bj,
-		impl.bg,
+		impl.a3,
+		impl.bk,
+		impl.bh,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.U && impl.U(sendToApp)
-			var view = impl.bk;
+			var divertHrefToApp = impl.V && impl.V(sendToApp)
+			var view = impl.bl;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aV);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aW);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bi) && (_VirtualDom_doc.title = title = doc.bi);
+				(title !== doc.bj) && (_VirtualDom_doc.title = title = doc.bj);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a7;
-	var onUrlRequest = impl.a8;
+	var onUrlChange = impl.a8;
+	var onUrlRequest = impl.a9;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		U: function(sendToApp)
+		V: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ax === next.ax
-							&& curr.ak === next.ak
-							&& curr.at.a === next.at.a
+							&& curr.ay === next.ay
+							&& curr.al === next.al
+							&& curr.au.a === next.au.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a2: function(flags)
+		a3: function(flags)
 		{
-			return A3(impl.a2, flags, _Browser_getUrl(), key);
+			return A3(impl.a3, flags, _Browser_getUrl(), key);
 		},
+		bl: impl.bl,
 		bk: impl.bk,
-		bj: impl.bj,
-		bg: impl.bg
+		bh: impl.bh
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a$: 'hidden', aW: 'visibilitychange' }
+		? { a0: 'hidden', aX: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a$: 'mozHidden', aW: 'mozvisibilitychange' }
+		? { a0: 'mozHidden', aX: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a$: 'msHidden', aW: 'msvisibilitychange' }
+		? { a0: 'msHidden', aX: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a$: 'webkitHidden', aW: 'webkitvisibilitychange' }
-		: { a$: 'hidden', aW: 'visibilitychange' };
+		? { a0: 'webkitHidden', aX: 'webkitvisibilitychange' }
+		: { a0: 'hidden', aX: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aF: _Browser_getScene(),
-		aN: {
-			aP: _Browser_window.pageXOffset,
-			aQ: _Browser_window.pageYOffset,
-			aO: _Browser_doc.documentElement.clientWidth,
-			ai: _Browser_doc.documentElement.clientHeight
+		aG: _Browser_getScene(),
+		aO: {
+			aQ: _Browser_window.pageXOffset,
+			aR: _Browser_window.pageYOffset,
+			aP: _Browser_doc.documentElement.clientWidth,
+			aj: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aO: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		ai: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aP: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aF: {
-				aO: node.scrollWidth,
-				ai: node.scrollHeight
+			aG: {
+				aP: node.scrollWidth,
+				aj: node.scrollHeight
 			},
-			aN: {
-				aP: node.scrollLeft,
-				aQ: node.scrollTop,
-				aO: node.clientWidth,
-				ai: node.clientHeight
+			aO: {
+				aQ: node.scrollLeft,
+				aR: node.scrollTop,
+				aP: node.clientWidth,
+				aj: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aF: _Browser_getScene(),
-			aN: {
-				aP: x,
-				aQ: y,
-				aO: _Browser_doc.documentElement.clientWidth,
-				ai: _Browser_doc.documentElement.clientHeight
+			aG: _Browser_getScene(),
+			aO: {
+				aQ: x,
+				aR: y,
+				aP: _Browser_doc.documentElement.clientWidth,
+				aj: _Browser_doc.documentElement.clientHeight
 			},
-			aZ: {
-				aP: x + rect.left,
-				aQ: y + rect.top,
-				aO: rect.width,
-				ai: rect.height
+			a_: {
+				aQ: x + rect.left,
+				aR: y + rect.top,
+				aP: rect.width,
+				aj: rect.height
 			}
 		};
 	});
@@ -4874,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ag: fragment, ak: host, ar: path, at: port_, ax: protocol, ay: query};
+		return {ah: fragment, al: host, as: path, au: port_, ay: protocol, az: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5153,11 +5153,40 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Main$initialInterRep = 0.01;
+var $elm$core$Basics$pow = _Basics_pow;
+var $author$project$Main$toRemainder = F3(
+	function (diceTotal, oneIn, logVal) {
+		var whole = $elm$core$Basics$floor(logVal);
+		var val = diceTotal;
+		var remainderTotal = oneIn - A2($elm$core$Basics$pow, val, whole);
+		var remainderFraction = remainderTotal / val;
+		var remainder = $elm$core$Basics$ceiling((remainderTotal * val) / oneIn);
+		return $elm$core$String$fromInt(remainder);
+	});
+var $author$project$Main$d20ToRemainder = F2(
+	function (oneIn, d20) {
+		return A3($author$project$Main$toRemainder, 20, oneIn, d20);
+	});
+var $author$project$Main$d20ToWhole = function (num) {
+	return $elm$core$String$fromInt(
+		$elm$core$Basics$floor(num));
+};
+var $author$project$Main$d6ToRemainder = F2(
+	function (oneIn, logVal) {
+		return A3($author$project$Main$toRemainder, 6, oneIn, logVal);
+	});
+var $author$project$Main$d6ToWhole = function (num) {
+	return $elm$core$String$fromInt(
+		$elm$core$Basics$floor(num));
+};
+var $author$project$Main$initialInterRep = 80.0;
 var $author$project$Main$irToCoin = function (num) {
 	return A2($elm$core$Basics$logBase, 2, num);
 };
-var $author$project$Main$irToDice = function (num) {
+var $author$project$Main$irToD20 = function (num) {
+	return A2($elm$core$Basics$logBase, 20, num);
+};
+var $author$project$Main$irToD6 = function (num) {
 	return A2($elm$core$Basics$logBase, 6, num);
 };
 var $author$project$Main$irToOneIn = function (num) {
@@ -5165,13 +5194,25 @@ var $author$project$Main$irToOneIn = function (num) {
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Main$oneInToIr = function (num) {
+	return num;
+};
 var $author$project$Main$init = function (_v0) {
+	var initOneIn = $author$project$Main$initialInterRep;
+	var initIr = $author$project$Main$oneInToIr(initOneIn);
+	var initD6 = $author$project$Main$irToD6(initIr);
+	var initD6Remainder = A2($author$project$Main$d6ToRemainder, initOneIn, initD6);
+	var initD6Whole = $author$project$Main$d6ToWhole(initD6);
+	var initD20 = $author$project$Main$irToD20(initIr);
+	var initD20Remainder = A2($author$project$Main$d20ToRemainder, initOneIn, initD20);
+	var initD20Whole = $author$project$Main$d20ToWhole(initD20);
 	return _Utils_Tuple2(
 		{
-			M: $author$project$Main$irToCoin($author$project$Main$initialInterRep),
-			J: '',
-			K: '',
-			N: $author$project$Main$irToDice($author$project$Main$initialInterRep),
+			O: $author$project$Main$irToCoin($author$project$Main$initialInterRep),
+			J: initD20Remainder,
+			K: initD20Whole,
+			L: initD6Remainder,
+			M: initD6Whole,
 			E: $author$project$Main$irToOneIn($author$project$Main$initialInterRep)
 		},
 		$elm$core$Platform$Cmd$none);
@@ -5180,23 +5221,6 @@ var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
-};
-var $elm$core$Basics$pow = _Basics_pow;
-var $author$project$Main$d20ToRemainder = F2(
-	function (oneIn, d20) {
-		var whole = $elm$core$Basics$floor(d20);
-		var remainder = $elm$core$Basics$floor(oneIn) - A2($elm$core$Basics$pow, 20, whole);
-		return $elm$core$String$fromInt(remainder);
-	});
-var $author$project$Main$d20ToWhole = function (num) {
-	return $elm$core$String$fromInt(
-		$elm$core$Basics$floor(num));
-};
-var $author$project$Main$irToD20 = function (num) {
-	return A2($elm$core$Basics$logBase, 20, num);
-};
-var $author$project$Main$oneInToIr = function (num) {
-	return num;
 };
 var $elm$core$String$toFloat = _String_toFloat;
 var $author$project$Main$update = F2(
@@ -5212,13 +5236,16 @@ var $author$project$Main$update = F2(
 			}
 		}();
 		var newIr = $author$project$Main$oneInToIr(newOneIn);
+		var newD6 = $author$project$Main$irToD6(newIr);
+		var newD6Remainder = A2($author$project$Main$d6ToRemainder, newOneIn, newD6);
+		var newD6Whole = $author$project$Main$d6ToWhole(newD6);
 		var newD20 = $author$project$Main$irToD20(newIr);
 		var newD20Remainder = A2($author$project$Main$d20ToRemainder, newOneIn, newD20);
 		var newD20Whole = $author$project$Main$d20ToWhole(newD20);
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{J: newD20Remainder, K: newD20Whole, E: newOneIn}),
+				{J: newD20Remainder, K: newD20Whole, L: newD6Remainder, M: newD6Whole, E: newOneIn}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $author$project$Main$ChangeOneIn = $elm$core$Basics$identity;
@@ -5361,8 +5388,7 @@ var $author$project$Main$view = function (model) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.N))
+										$elm$html$Html$text(model.M + (' 6\'s in a row and a roll greater than ' + model.L))
 									])),
 								A2(
 								$elm$html$Html$h3,
@@ -5377,13 +5403,13 @@ var $author$project$Main$view = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.M))
+										$elm$core$String$fromFloat(model.O))
 									]))
 							]))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{a2: $author$project$Main$init, bg: $author$project$Main$subscriptions, bj: $author$project$Main$update, bk: $author$project$Main$view});
+	{a3: $author$project$Main$init, bh: $author$project$Main$subscriptions, bk: $author$project$Main$update, bl: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
