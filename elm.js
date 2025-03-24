@@ -5258,10 +5258,90 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$b = _VirtualDom_node('b');
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$em = _VirtualDom_node('em');
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$span = _VirtualDom_node('span');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$diceView = F4(
+	function (title, whole, remainder, diceVal) {
+		var valText = function () {
+			if (whole === '1') {
+				return '';
+			} else {
+				return '\'s in a row';
+			}
+		}();
+		var showRemainder = function () {
+			if (remainder === '0') {
+				return false;
+			} else {
+				return true;
+			}
+		}();
+		var remainderText = function () {
+			if (showRemainder) {
+				return 'and a roll greater than ';
+			} else {
+				return 'exactly';
+			}
+		}();
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('item')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h3,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(title)
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$em,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(whole)
+								])),
+							A2(
+							$elm$html$Html$b,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(' ' + diceVal)
+								])),
+							A2(
+							$elm$html$Html$span,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(valText + (' ' + (remainderText + ' ')))
+								])),
+							showRemainder ? A2(
+							$elm$html$Html$b,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(remainder)
+								])) : A2($elm$html$Html$span, _List_Nil, _List_Nil)
+						]))
+				]));
+	});
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
@@ -5297,11 +5377,8 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$view = function (model) {
 	return A2(
@@ -5362,48 +5439,34 @@ var $author$project$Main$view = function (model) {
 										$elm$html$Html$text(
 										$elm$core$String$fromFloat(model.E))
 									])),
+								A4($author$project$Main$diceView, 'D20', model.K, model.J, '20'),
+								A4($author$project$Main$diceView, '6 Sided Dice', model.M, model.L, '6'),
 								A2(
-								$elm$html$Html$h3,
-								_List_Nil,
+								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$text('D20')
-									])),
-								A2(
-								$elm$html$Html$p,
-								_List_Nil,
+										$elm$html$Html$Attributes$class('item')
+									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(model.K + (' 20\'s in a row and a roll greater than ' + model.J))
-									])),
-								A2(
-								$elm$html$Html$h3,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Dice')
-									])),
-								A2(
-								$elm$html$Html$p,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text(model.M + (' 6\'s in a row and a roll greater than ' + model.L))
-									])),
-								A2(
-								$elm$html$Html$h3,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Coinflips')
-									])),
-								A2(
-								$elm$html$Html$p,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.O))
+										A2(
+										$elm$html$Html$h3,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('left')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Coinflips')
+											])),
+										A2(
+										$elm$html$Html$p,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												$elm$core$String$fromFloat(model.O))
+											]))
 									]))
 							]))
 					]))

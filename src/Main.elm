@@ -175,14 +175,40 @@ view model =
                 [ h3 [] [ text "1 in X" ]
                 , input [ value <| String.fromFloat model.oneIn, onInput ChangeOneIn] []
                 , p [] [ text <| String.fromFloat model.oneIn ]
-                , h3 [] [ text "D20" ]
-                , p [] [ text <| model.d20Whole ++ " 20's in a row and a roll greater than " ++ model.d20Remainder ]
-                , h3 [] [ text "Dice" ]
-                , p [] [ text <| model.d6Whole ++ " 6's in a row and a roll greater than " ++ model.d6Remainder ]
-                , h3 [] [ text "Coinflips" ]
+                , diceView "D20" model.d20Whole model.d20Remainder "20"
+                , diceView "6 Sided Dice" model.d6Whole model.d6Remainder "6"
+                , div [ class "item" ]
+                [ h3 [ class "left" ] [ text "Coinflips" ]
                 , p [] [ text <| String.fromFloat model.coin ]
+                ]
                 ]
             ]
         ]
 
 
+diceView : String -> String -> String -> String -> Html Msg
+diceView title whole remainder diceVal =
+    let 
+        valText = case whole of
+            "1" -> "" 
+            _ -> "'s in a row"
+            
+        showRemainder = case remainder of
+            "0" -> False
+            _ -> True
+            
+        remainderText = case showRemainder of
+            True -> "and a roll greater than "
+            False -> "exactly"
+
+    in
+    div [ class "item"]
+    [ h3 [] [ text title ]
+    , p []
+        [ em [] [ text whole ]
+        , b [] [ text <| " " ++ diceVal ]
+        , span [] [ text <| valText ++ " " ++ remainderText ++ " "]
+        , if showRemainder then b [][ text remainder ] else span[][]
+        ]
+    ]
+    
