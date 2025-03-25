@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), init, main, subscriptions, update, view)
 import Browser
 import Color exposing (hsl, toCssString)
 import Html exposing (..)
-import Html.Attributes exposing (class, disabled, style, type_, value)
+import Html.Attributes exposing (class, disabled, style, type_, value, placeholder)
 import Html.Events exposing (..)
 
 
@@ -25,7 +25,9 @@ main =
 
 
 type alias Model =
-    { oneIn : Float
+    { input : String
+    , inputError : InputError
+    , oneIn : Float
     , percent : String
     , d20 : Die
     , d6 : Die
@@ -40,6 +42,12 @@ type alias Die =
     , remainderExact : Bool
     , val : Int
     }
+
+type InputError
+    = AllGood
+    | EmptyInput
+    | LessThanOne
+    | NotANumber
 
 
 init : () -> ( Model, Cmd Msg )
@@ -71,7 +79,9 @@ init _ =
         initCoinRemainderExact = toRemainderExact coinVal initIr initCoin
         
     in
-    (   { oneIn = irToOneIn initialInterRep
+    (   { input = initialInput
+        , inputError = AllGood
+        , oneIn = irToOneIn initialInterRep
         , percent = initPercent
         , d20 =
             { title = "D20"
@@ -107,6 +117,9 @@ init _ =
 
 initialInterRep : Float
 initialInterRep = 80.0
+
+initialInput : String
+initialInput = "80"
 
 
 irToOneIn : Float -> Float
@@ -174,14 +187,20 @@ update msg model =
     case msg of
         ChangeOneIn newNumber ->
             let
+                newInput = newNumber
                 newOneIn = case String.toFloat newNumber of
                     Just num ->
                         num
                     Nothing ->
-                        0.0
+                        -1
+                newInputError = case String.toFloat newNumber of
+                    Just num ->
+                        if num < 1 then LessThanOne else AllGood
+                    Nothing ->
+                        if String.length newNumber == 0 then EmptyInput else NotANumber
+
                 newIr = oneInToIr newOneIn
 
-                
                 newPercent = String.fromFloat ((1 / newIr) * 100)
                 
                 oldD20 = model.d20
@@ -209,7 +228,9 @@ update msg model =
                 newCoinRemainderExact = toRemainderExact (toFloat model.coin.val) newIr newCoin
             in
             ( { model
-            | oneIn = newOneIn
+            | input = newInput
+            , inputError = newInputError
+            , oneIn = newOneIn
             , percent = newPercent
             , d20 = { oldD20
                 | whole = newD20Whole
@@ -249,78 +270,138 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "main", class "wide", class "tall", class "col" ]
-        [ h1 [] [ text "Probabilities" ]
+        [ h1 [] [ text <| titleText model.oneIn ]
         , div [ class "item-container" ]
-            [ div [ class "item", class "row" ]
+            [ div
+                [ class "item"
+                , class "row"
+                , class <| case model.inputError of
+                    AllGood -> "good-input"
+                    EmptyInput -> "empty-input"
+                    NotANumber -> "bad-input"
+                    LessThanOne -> "less-than-one-input"
+             ]
                 [ h2 [] [ text "1" ]
                 , span [] [ text "in"]
-                , input [ value <| String.fromFloat model.oneIn, onInput ChangeOneIn] []
+                , input [ placeholder "Enter a number...", value model.input, onInput ChangeOneIn] []
             ] 
-            , percentView model.percent
-            , coinView model.coin
-            , diceView model.d6
-            , diceView model.d20
-            , diceView model.d12
+            , percentView model.percent model.inputError
+            , coinView model.coin model.inputError
+            , diceView model.d6 model.inputError
+            , diceView model.d20 model.inputError
+            , diceView model.d12 model.inputError
+            ]
+        , p [class "warning"]
+            [b [][text "Warning"]
+            , text " calculations are using 64 bit floating point numbers and are not infinite precision"
             ]
         ]
 
+titleText : Float -> String
+titleText num =
+    if num < 0 then "Probably Huh?"
+    else if num <= 1 then "Most Definitely"
+    else if num < 2 then "Probably"
+    else if num == 2 then "Probably Maybe"
+    else "Probably Not"
 
-diceView : Die -> Html Msg
-diceView die =
 
-    let 
-        valText = case die.whole of
-            "1" -> "" 
-            _ -> "'s in a row"
+
+
+diceView : Die -> InputError -> Html Msg
+diceView die err =
+    case err of
+        AllGood ->
+            let 
+                valText = case die.whole of
+                    "1" -> "" 
+                    _ -> "'s in a row"
             
-        showRemainder = not (die.remainder == "0" && die.remainderExact)
+                showRemainder = not (die.remainder == "0" && die.remainderExact)
             
-        remainderText = case (showRemainder, die.remainderExact) of
-            (True, True) -> "and a roll equal to or greater than "
-            (True, False) -> "and a roll greater than "
-            (False, _) -> "exactly"
+                remainderText = case (showRemainder, die.remainderExact) of
+                    (True, True) -> "and a roll equal to or greater than "
+                    (True, False) -> "and a roll greater than "
+                    (False, _) -> "exactly"
 
-    in
-    div [ class "item"]
-    [ h3 [] [ text die.title ]
-    , p []
-        [ b [] [ text die.whole ]
-        , span [] [ text <| " " ++ (String.fromInt die.val) ++ valText ++ " " ++ remainderText ++ " "]
-        , if showRemainder then b [][ text die.remainder ] else span[][]
-        ]
-    ]
+            in
+            div [ class "item"]
+            [ h3 [] [ text die.title ]
+            , p []
+                [ b [] [ text die.whole ]
+                , span [] [ text <| " " ++ (String.fromInt die.val) ++ valText ++ " " ++ remainderText ++ " "]
+                , if showRemainder then b [][ text die.remainder ] else span[][]
+                ]
+            ]
+        _ -> 
+            div [ class "item", class "not-applicable"]
+            [ h3 [] [ text die.title ]
+            , p [][ text inputNotApplicable ]
+            ]
     
     
-coinView : Die -> Html Msg
-coinView die =
-
-    let 
-        valText = case die.whole of
-            "1" -> "" 
-            _ -> "'s in a row"
+coinView : Die -> InputError -> Html Msg
+coinView die err =
+    case err of
+        AllGood ->
+            let 
+                valText = case die.whole of
+                    "1" -> "" 
+                    _ -> "'s in a row"
             
-        showRemainder = not (die.remainder == "0" && die.remainderExact)
+                showRemainder = not (die.remainder == "0" && die.remainderExact)
             
-        remainderText = case (showRemainder, die.remainderExact) of
-            (True, True) -> "and a bit more"
-            (True, False) -> "and a bit more"
-            (False, _) -> "exactly"
+                remainderText = case (showRemainder, die.remainderExact) of
+                    (True, True) -> "and then some"
+                    (True, False) -> "and then some"
+                    (False, _) -> "exactly"
 
-    in
-    div [ class "item"]
-    [ h3 [] [ text die.title ]
-    , p []
-        [ b [] [ text die.whole ]
-        , span [] [ text <| " " ++ "head" ++ valText ++ " " ++ remainderText ++ " "]
-        ]
-    ]
+            in
+            div [ class "item"]
+            [ h3 [] [ text die.title ]
+            , p []
+                [ b [] [ text die.whole ]
+                , span [] [ text <| " " ++ "head" ++ valText ++ " " ++ remainderText ++ " "]
+                ]
+            ]
+
+        _ -> 
+            div [ class "item", class "not-applicable"]
+            [ h3 [] [ text die.title ]
+            , p [][ text inputNotApplicable ]
+            ]
     
-percentView : String -> Html Msg
-percentView str =
+percentView : String -> InputError -> Html Msg
+percentView str err =
+    case err of
+        AllGood -> 
+            percentViewGood str
+
+        LessThanOne -> 
+            percentViewGood str
+
+        _ ->
+            percentViewBad
+
+
+
+percentViewGood : String -> Html Msg
+percentViewGood str =
     div [ class "item"]
     [ h3 [] [ text "Percent" ]
     , p []
         [ b [] [ text <| str ++ "%" ]
         ]
     ]
-    
+
+
+percentViewBad : Html Msg
+percentViewBad =
+    div [ class "item", class "not-applicable" ]
+    [ h3 [] [ text "Percent" ]
+    , p [][ text inputNotApplicable ]
+    ]
+
+inputNotApplicable : String
+inputNotApplicable =
+    "Input not applicable"
