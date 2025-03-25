@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.W.D === region.ad.D)
+	if (region._.M === region.ah.M)
 	{
-		return 'on line ' + region.W.D;
+		return 'on line ' + region._.M;
 	}
-	return 'on lines ' + region.W.D + ' through ' + region.ad.D;
+	return 'on lines ' + region._.M + ' through ' + region.ah.M;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a3,
-		impl.bk,
-		impl.bh,
+		impl.a7,
+		impl.bn,
+		impl.bl,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		s: func(record.s),
-		X: record.X,
-		T: record.T
+		A: func(record.A),
+		aa: record.aa,
+		X: record.X
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.s;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.X;
+		var message = !tag ? value : tag < 3 ? value.a : value.A;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aa;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.T) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.X) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a3,
-		impl.bk,
-		impl.bh,
+		impl.a7,
+		impl.bn,
+		impl.bl,
 		function(sendToApp, initialModel) {
-			var view = impl.bl;
+			var view = impl.bo;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.a3,
-		impl.bk,
-		impl.bh,
+		impl.a7,
+		impl.bn,
+		impl.bl,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.V && impl.V(sendToApp)
-			var view = impl.bl;
+			var divertHrefToApp = impl.Z && impl.Z(sendToApp)
+			var view = impl.bo;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aW);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a_);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.bj) && (_VirtualDom_doc.title = title = doc.bj);
+				(title !== doc.G) && (_VirtualDom_doc.title = title = doc.G);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a8;
-	var onUrlRequest = impl.a9;
+	var onUrlChange = impl.bc;
+	var onUrlRequest = impl.bd;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		V: function(sendToApp)
+		Z: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ay === next.ay
-							&& curr.al === next.al
-							&& curr.au.a === next.au.a
+							&& curr.aC === next.aC
+							&& curr.ap === next.ap
+							&& curr.ay.a === next.ay.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		a3: function(flags)
+		a7: function(flags)
 		{
-			return A3(impl.a3, flags, _Browser_getUrl(), key);
+			return A3(impl.a7, flags, _Browser_getUrl(), key);
 		},
-		bl: impl.bl,
-		bk: impl.bk,
-		bh: impl.bh
+		bo: impl.bo,
+		bn: impl.bn,
+		bl: impl.bl
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { a0: 'hidden', aX: 'visibilitychange' }
+		? { a4: 'hidden', a$: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { a0: 'mozHidden', aX: 'mozvisibilitychange' }
+		? { a4: 'mozHidden', a$: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { a0: 'msHidden', aX: 'msvisibilitychange' }
+		? { a4: 'msHidden', a$: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { a0: 'webkitHidden', aX: 'webkitvisibilitychange' }
-		: { a0: 'hidden', aX: 'visibilitychange' };
+		? { a4: 'webkitHidden', a$: 'webkitvisibilitychange' }
+		: { a4: 'hidden', a$: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aG: _Browser_getScene(),
-		aO: {
-			aQ: _Browser_window.pageXOffset,
-			aR: _Browser_window.pageYOffset,
-			aP: _Browser_doc.documentElement.clientWidth,
-			aj: _Browser_doc.documentElement.clientHeight
+		aK: _Browser_getScene(),
+		aS: {
+			aU: _Browser_window.pageXOffset,
+			aV: _Browser_window.pageYOffset,
+			aT: _Browser_doc.documentElement.clientWidth,
+			an: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aP: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aT: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		an: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aG: {
-				aP: node.scrollWidth,
-				aj: node.scrollHeight
+			aK: {
+				aT: node.scrollWidth,
+				an: node.scrollHeight
 			},
-			aO: {
-				aQ: node.scrollLeft,
-				aR: node.scrollTop,
-				aP: node.clientWidth,
-				aj: node.clientHeight
+			aS: {
+				aU: node.scrollLeft,
+				aV: node.scrollTop,
+				aT: node.clientWidth,
+				an: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aG: _Browser_getScene(),
-			aO: {
-				aQ: x,
-				aR: y,
-				aP: _Browser_doc.documentElement.clientWidth,
-				aj: _Browser_doc.documentElement.clientHeight
+			aK: _Browser_getScene(),
+			aS: {
+				aU: x,
+				aV: y,
+				aT: _Browser_doc.documentElement.clientWidth,
+				an: _Browser_doc.documentElement.clientHeight
 			},
-			a_: {
-				aQ: x + rect.left,
-				aR: y + rect.top,
-				aP: rect.width,
-				aj: rect.height
+			a2: {
+				aU: x + rect.left,
+				aV: y + rect.top,
+				aT: rect.width,
+				an: rect.height
 			}
 		};
 	});
@@ -4787,7 +4787,7 @@ var $elm$core$Array$builderToArray = F2(
 			var treeLen = builder.e * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.h) : builder.h;
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.i) : builder.i;
 			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.e);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
@@ -4807,7 +4807,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{h: nodeList, e: (len / $elm$core$Array$branchFactor) | 0, g: tail});
+					{i: nodeList, e: (len / $elm$core$Array$branchFactor) | 0, g: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4874,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ah: fragment, al: host, as: path, au: port_, ay: protocol, az: query};
+		return {al: fragment, ap: host, aw: path, ay: port_, aC: protocol, aD: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5153,42 +5153,11 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $elm$core$Basics$pow = _Basics_pow;
-var $author$project$Main$toRemainder = F3(
-	function (diceTotal, oneIn, logVal) {
-		var whole = $elm$core$Basics$floor(logVal);
-		var val = diceTotal;
-		var remainderTotal = oneIn - A2($elm$core$Basics$pow, val, whole);
-		var remainderFraction = remainderTotal / val;
-		var remainder = $elm$core$Basics$ceiling((remainderTotal * val) / oneIn);
-		return $elm$core$String$fromInt(remainder);
-	});
-var $author$project$Main$d20ToRemainder = F2(
-	function (oneIn, d20) {
-		return A3($author$project$Main$toRemainder, 20, oneIn, d20);
-	});
-var $author$project$Main$d20ToWhole = function (num) {
-	return $elm$core$String$fromInt(
-		$elm$core$Basics$floor(num));
-};
-var $author$project$Main$d6ToRemainder = F2(
-	function (oneIn, logVal) {
-		return A3($author$project$Main$toRemainder, 6, oneIn, logVal);
-	});
-var $author$project$Main$d6ToWhole = function (num) {
-	return $elm$core$String$fromInt(
-		$elm$core$Basics$floor(num));
-};
 var $author$project$Main$initialInterRep = 80.0;
-var $author$project$Main$irToCoin = function (num) {
-	return A2($elm$core$Basics$logBase, 2, num);
-};
-var $author$project$Main$irToD20 = function (num) {
-	return A2($elm$core$Basics$logBase, 20, num);
-};
-var $author$project$Main$irToD6 = function (num) {
-	return A2($elm$core$Basics$logBase, 6, num);
-};
+var $author$project$Main$irToDie = F2(
+	function (dieMax, num) {
+		return A2($elm$core$Basics$logBase, dieMax, num);
+	});
 var $author$project$Main$irToOneIn = function (num) {
 	return num;
 };
@@ -5197,23 +5166,85 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$oneInToIr = function (num) {
 	return num;
 };
+var $author$project$Main$isWholeNumber = function (num) {
+	return !(num - $elm$core$Basics$floor(num));
+};
+var $elm$core$Basics$pow = _Basics_pow;
+var $author$project$Main$toRemainder = F3(
+	function (diceTotal, oneIn, logVal) {
+		var whole = $elm$core$Basics$floor(logVal);
+		var val = diceTotal;
+		var remainderTotal = oneIn - A2($elm$core$Basics$pow, val, whole);
+		var remainderRaw = (remainderTotal * val) / oneIn;
+		var remainderFraction = remainderTotal / val;
+		var remainderFloored = $elm$core$Basics$floor(remainderRaw);
+		var isRemainderWhole = $author$project$Main$isWholeNumber(remainderRaw);
+		var remainder = ((!remainderFloored) && isRemainderWhole) ? 0 : (remainderFloored + 1);
+		return $elm$core$String$fromInt(remainder);
+	});
+var $author$project$Main$toRemainderExact = F3(
+	function (diceTotal, oneIn, logVal) {
+		var whole = $elm$core$Basics$floor(logVal);
+		var val = diceTotal;
+		var remainderTotal = oneIn - A2($elm$core$Basics$pow, val, whole);
+		var remainderFraction = remainderTotal / val;
+		var remainder = (remainderTotal * val) / oneIn;
+		return $author$project$Main$isWholeNumber(remainder);
+	});
+var $author$project$Main$toWhole = function (num) {
+	return $elm$core$String$fromInt(
+		$elm$core$Basics$floor(num));
+};
 var $author$project$Main$init = function (_v0) {
 	var initOneIn = $author$project$Main$initialInterRep;
 	var initIr = $author$project$Main$oneInToIr(initOneIn);
-	var initD6 = $author$project$Main$irToD6(initIr);
-	var initD6Remainder = A2($author$project$Main$d6ToRemainder, initOneIn, initD6);
-	var initD6Whole = $author$project$Main$d6ToWhole(initD6);
-	var initD20 = $author$project$Main$irToD20(initIr);
-	var initD20Remainder = A2($author$project$Main$d20ToRemainder, initOneIn, initD20);
-	var initD20Whole = $author$project$Main$d20ToWhole(initD20);
+	var d6Val = 6;
+	var initD6 = A2($author$project$Main$irToDie, d6Val, initIr);
+	var initD6Remainder = A3($author$project$Main$toRemainder, d6Val, initIr, initD6);
+	var initD6RemainderExact = A3($author$project$Main$toRemainderExact, d6Val, initIr, initD6);
+	var d20Val = 20;
+	var initD20 = A2($author$project$Main$irToDie, d20Val, initIr);
+	var initD20Remainder = A3($author$project$Main$toRemainder, d20Val, initIr, initD20);
+	var initD20RemainderExact = A3($author$project$Main$toRemainderExact, d20Val, initIr, initD20);
+	var d12Val = 12;
+	var initD12 = A2($author$project$Main$irToDie, d12Val, initIr);
+	var initD12Remainder = A3($author$project$Main$toRemainder, d12Val, initIr, initD12);
+	var initD12RemainderExact = A3($author$project$Main$toRemainderExact, d12Val, initIr, initD12);
+	var coinVal = 2;
+	var initCoin = A2($author$project$Main$irToDie, coinVal, initIr);
+	var initCoinRemainder = A3($author$project$Main$toRemainder, coinVal, initIr, initCoin);
+	var initCoinRemainderExact = A3($author$project$Main$toRemainderExact, coinVal, initIr, initCoin);
 	return _Utils_Tuple2(
 		{
-			O: $author$project$Main$irToCoin($author$project$Main$initialInterRep),
-			J: initD20Remainder,
-			K: initD20Whole,
-			L: initD6Remainder,
-			M: initD6Whole,
-			E: $author$project$Main$irToOneIn($author$project$Main$initialInterRep)
+			w: {
+				p: initCoinRemainder,
+				l: initCoinRemainderExact,
+				G: 'Coin Flips',
+				h: coinVal,
+				m: $author$project$Main$toWhole(initCoin)
+			},
+			x: {
+				p: initD12Remainder,
+				l: initD12RemainderExact,
+				G: 'D12',
+				h: d12Val,
+				m: $author$project$Main$toWhole(initD12)
+			},
+			y: {
+				p: initD20Remainder,
+				l: initD20RemainderExact,
+				G: 'D20',
+				h: d20Val,
+				m: $author$project$Main$toWhole(initD20)
+			},
+			z: {
+				p: initD6Remainder,
+				l: initD6RemainderExact,
+				G: 'Six-sided Dice Rolls',
+				h: d6Val,
+				m: $author$project$Main$toWhole(initD6)
+			},
+			R: $author$project$Main$irToOneIn($author$project$Main$initialInterRep)
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -5226,6 +5257,10 @@ var $elm$core$String$toFloat = _String_toFloat;
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		var newNumber = msg;
+		var oldD6 = model.z;
+		var oldD20 = model.y;
+		var oldD12 = model.x;
+		var oldCoin = model.w;
 		var newOneIn = function () {
 			var _v1 = $elm$core$String$toFloat(newNumber);
 			if (!_v1.$) {
@@ -5236,16 +5271,40 @@ var $author$project$Main$update = F2(
 			}
 		}();
 		var newIr = $author$project$Main$oneInToIr(newOneIn);
-		var newD6 = $author$project$Main$irToD6(newIr);
-		var newD6Remainder = A2($author$project$Main$d6ToRemainder, newOneIn, newD6);
-		var newD6Whole = $author$project$Main$d6ToWhole(newD6);
-		var newD20 = $author$project$Main$irToD20(newIr);
-		var newD20Remainder = A2($author$project$Main$d20ToRemainder, newOneIn, newD20);
-		var newD20Whole = $author$project$Main$d20ToWhole(newD20);
+		var newD6 = A2($author$project$Main$irToDie, model.z.h, newIr);
+		var newD6Remainder = A3($author$project$Main$toRemainder, model.z.h, newIr, newD6);
+		var newD6RemainderExact = A3($author$project$Main$toRemainderExact, model.z.h, newIr, newD6);
+		var newD6Whole = $author$project$Main$toWhole(newD6);
+		var newD20 = A2($author$project$Main$irToDie, model.y.h, newIr);
+		var newD20Remainder = A3($author$project$Main$toRemainder, model.y.h, newIr, newD20);
+		var newD20RemainderExact = A3($author$project$Main$toRemainderExact, model.y.h, newIr, newD20);
+		var newD20Whole = $author$project$Main$toWhole(newD20);
+		var newD12 = A2($author$project$Main$irToDie, model.x.h, newIr);
+		var newD12Remainder = A3($author$project$Main$toRemainder, model.x.h, newIr, newD12);
+		var newD12RemainderExact = A3($author$project$Main$toRemainderExact, model.x.h, newIr, newD12);
+		var newD12Whole = $author$project$Main$toWhole(newD12);
+		var newCoin = A2($author$project$Main$irToDie, model.w.h, newIr);
+		var newCoinRemainder = A3($author$project$Main$toRemainder, model.w.h, newIr, newCoin);
+		var newCoinRemainderExact = A3($author$project$Main$toRemainderExact, model.w.h, newIr, newCoin);
+		var newCoinWhole = $author$project$Main$toWhole(newCoin);
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{J: newD20Remainder, K: newD20Whole, L: newD6Remainder, M: newD6Whole, E: newOneIn}),
+				{
+					w: _Utils_update(
+						oldCoin,
+						{p: newCoinRemainder, l: newCoinRemainderExact, m: newCoinWhole}),
+					x: _Utils_update(
+						oldD12,
+						{p: newD12Remainder, l: newD12RemainderExact, m: newD12Whole}),
+					y: _Utils_update(
+						oldD20,
+						{p: newD20Remainder, l: newD20RemainderExact, m: newD20Whole}),
+					z: _Utils_update(
+						oldD6,
+						{p: newD6Remainder, l: newD6RemainderExact, m: newD6Whole}),
+					R: newOneIn
+				}),
 			$elm$core$Platform$Cmd$none);
 	});
 var $author$project$Main$ChangeOneIn = $elm$core$Basics$identity;
@@ -5260,88 +5319,141 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$b = _VirtualDom_node('b');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$em = _VirtualDom_node('em');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$core$Basics$not = _Basics_not;
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Main$diceView = F4(
-	function (title, whole, remainder, diceVal) {
-		var valText = function () {
-			if (whole === '1') {
-				return '';
+var $author$project$Main$coinView = function (die) {
+	var valText = function () {
+		var _v1 = die.m;
+		if (_v1 === '1') {
+			return '';
+		} else {
+			return '\'s in a row';
+		}
+	}();
+	var showRemainder = !((die.p === '0') && die.l);
+	var remainderText = function () {
+		var _v0 = _Utils_Tuple2(showRemainder, die.l);
+		if (_v0.a) {
+			if (_v0.b) {
+				return 'and a bit more';
 			} else {
-				return '\'s in a row';
+				return 'and a bit more';
 			}
-		}();
-		var showRemainder = function () {
-			if (remainder === '0') {
-				return false;
+		} else {
+			return 'exactly';
+		}
+	}();
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('item')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$h3,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(die.G)
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$b,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(die.m)
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(' ' + ('head' + (valText + (' ' + (remainderText + ' ')))))
+							]))
+					]))
+			]));
+};
+var $author$project$Main$diceView = function (die) {
+	var valText = function () {
+		var _v1 = die.m;
+		if (_v1 === '1') {
+			return '';
+		} else {
+			return '\'s in a row';
+		}
+	}();
+	var showRemainder = !((die.p === '0') && die.l);
+	var remainderText = function () {
+		var _v0 = _Utils_Tuple2(showRemainder, die.l);
+		if (_v0.a) {
+			if (_v0.b) {
+				return 'and a roll equal to or greater than ';
 			} else {
-				return true;
-			}
-		}();
-		var remainderText = function () {
-			if (showRemainder) {
 				return 'and a roll greater than ';
-			} else {
-				return 'exactly';
 			}
-		}();
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('item')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$h3,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text(title)
-						])),
-					A2(
-					$elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$em,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(whole)
-								])),
-							A2(
-							$elm$html$Html$b,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(' ' + diceVal)
-								])),
-							A2(
-							$elm$html$Html$span,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(valText + (' ' + (remainderText + ' ')))
-								])),
-							showRemainder ? A2(
-							$elm$html$Html$b,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(remainder)
-								])) : A2($elm$html$Html$span, _List_Nil, _List_Nil)
-						]))
-				]));
-	});
+		} else {
+			return 'exactly';
+		}
+	}();
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('item')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$h3,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(die.G)
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$b,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(die.m)
+							])),
+						A2(
+						$elm$html$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								' ' + ($elm$core$String$fromInt(die.h) + (valText + (' ' + (remainderText + ' ')))))
+							])),
+						showRemainder ? A2(
+						$elm$html$Html$b,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(die.p)
+							])) : A2($elm$html$Html$span, _List_Nil, _List_Nil)
+					]))
+			]));
+};
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
@@ -5377,14 +5489,13 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			$elm$html$Html$Events$alwaysStop,
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
+				$elm$html$Html$Attributes$class('main'),
 				$elm$html$Html$Attributes$class('wide'),
 				$elm$html$Html$Attributes$class('tall'),
 				$elm$html$Html$Attributes$class('col')
@@ -5402,8 +5513,7 @@ var $author$project$Main$view = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('col'),
-						A2($elm$html$Html$Attributes$style, 'flex-wrap', 'wrap')
+						$elm$html$Html$Attributes$class('item-container')
 					]),
 				_List_fromArray(
 					[
@@ -5411,68 +5521,43 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col')
+								$elm$html$Html$Attributes$class('item'),
+								$elm$html$Html$Attributes$class('row')
 							]),
 						_List_fromArray(
 							[
 								A2(
-								$elm$html$Html$h3,
+								$elm$html$Html$h2,
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text('1 in X')
+										$elm$html$Html$text('1')
+									])),
+								A2(
+								$elm$html$Html$span,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('in')
 									])),
 								A2(
 								$elm$html$Html$input,
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$value(
-										$elm$core$String$fromFloat(model.E)),
+										$elm$core$String$fromFloat(model.R)),
 										$elm$html$Html$Events$onInput($elm$core$Basics$identity)
 									]),
-								_List_Nil),
-								A2(
-								$elm$html$Html$p,
-								_List_Nil,
-								_List_fromArray(
-									[
-										$elm$html$Html$text(
-										$elm$core$String$fromFloat(model.E))
-									])),
-								A4($author$project$Main$diceView, 'D20', model.K, model.J, '20'),
-								A4($author$project$Main$diceView, '6 Sided Dice', model.M, model.L, '6'),
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('item')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$h3,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('left')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Coinflips')
-											])),
-										A2(
-										$elm$html$Html$p,
-										_List_Nil,
-										_List_fromArray(
-											[
-												$elm$html$Html$text(
-												$elm$core$String$fromFloat(model.O))
-											]))
-									]))
-							]))
+								_List_Nil)
+							])),
+						$author$project$Main$coinView(model.w),
+						$author$project$Main$diceView(model.z),
+						$author$project$Main$diceView(model.y),
+						$author$project$Main$diceView(model.x)
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{a3: $author$project$Main$init, bh: $author$project$Main$subscriptions, bk: $author$project$Main$update, bl: $author$project$Main$view});
+	{a7: $author$project$Main$init, bl: $author$project$Main$subscriptions, bn: $author$project$Main$update, bo: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
