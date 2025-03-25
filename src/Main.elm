@@ -26,6 +26,7 @@ main =
 
 type alias Model =
     { oneIn : Float
+    , percent : String
     , d20 : Die
     , d6 : Die
     , d12 : Die
@@ -46,6 +47,8 @@ init _ =
     let
         initOneIn = initialInterRep
         initIr = oneInToIr initOneIn
+
+        initPercent = String.fromFloat ((1 / initIr) * 100)
         
         d20Val = 20
         initD20 = irToDie d20Val initIr
@@ -69,6 +72,7 @@ init _ =
         
     in
     (   { oneIn = irToOneIn initialInterRep
+        , percent = initPercent
         , d20 =
             { title = "D20"
             , whole = toWhole initD20
@@ -176,6 +180,9 @@ update msg model =
                     Nothing ->
                         0.0
                 newIr = oneInToIr newOneIn
+
+                
+                newPercent = String.fromFloat ((1 / newIr) * 100)
                 
                 oldD20 = model.d20
                 newD20 = irToDie model.d20.val newIr
@@ -203,6 +210,7 @@ update msg model =
             in
             ( { model
             | oneIn = newOneIn
+            , percent = newPercent
             , d20 = { oldD20
                 | whole = newD20Whole
                 , remainder = newD20Remainder
@@ -248,6 +256,7 @@ view model =
                 , span [] [ text "in"]
                 , input [ value <| String.fromFloat model.oneIn, onInput ChangeOneIn] []
             ] 
+            , percentView model.percent
             , coinView model.coin
             , diceView model.d6
             , diceView model.d20
@@ -303,6 +312,15 @@ coinView die =
     , p []
         [ b [] [ text die.whole ]
         , span [] [ text <| " " ++ "head" ++ valText ++ " " ++ remainderText ++ " "]
+        ]
+    ]
+    
+percentView : String -> Html Msg
+percentView str =
+    div [ class "item"]
+    [ h3 [] [ text "Percent" ]
+    , p []
+        [ b [] [ text <| str ++ "%" ]
         ]
     ]
     
