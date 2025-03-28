@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), init, main, subscriptions, update, view)
 import Browser
 import Color exposing (hsl, toCssString)
 import Html exposing (..)
-import Html.Attributes exposing (class, disabled, style, type_, value, placeholder)
+import Html.Attributes exposing (class, disabled, style, type_, value, placeholder, autofocus)
 import Html.Events exposing (..)
 
 
@@ -29,9 +29,13 @@ type alias Model =
     , inputError : InputError
     , oneIn : Float
     , percent : String
+    , dice : Die
     , d20 : Die
-    , d6 : Die
     , d12 : Die
+    , d10 : Die
+    , d8 : Die
+    , d6 : Die
+    , d4 : Die
     , coin : Die
     }
 
@@ -62,16 +66,31 @@ init _ =
         initD20 = irToDie d20Val initIr
         initD20Remainder = toRemainder d20Val initIr initD20
         initD20RemainderExact = toRemainderExact d20Val initIr initD20
+
+        d12Val = 12
+        initD12 = irToDie d12Val initIr
+        initD12Remainder = toRemainder d12Val initIr initD12
+        initD12RemainderExact = toRemainderExact d12Val initIr initD12
+        
+        d10Val = 10
+        initD10 = irToDie d10Val initIr
+        initD10Remainder = toRemainder d10Val initIr initD10
+        initD10RemainderExact = toRemainderExact d10Val initIr initD10
+        
+        d8Val = 8
+        initD8 = irToDie d8Val initIr
+        initD8Remainder = toRemainder d8Val initIr initD8
+        initD8RemainderExact = toRemainderExact d8Val initIr initD8
         
         d6Val = 6
         initD6 = irToDie d6Val initIr
         initD6Remainder = toRemainder d6Val initIr initD6
         initD6RemainderExact = toRemainderExact d6Val initIr initD6
 
-        d12Val = 12
-        initD12 = irToDie d12Val initIr
-        initD12Remainder = toRemainder d12Val initIr initD12
-        initD12RemainderExact = toRemainderExact d12Val initIr initD12
+        d4Val = 4
+        initD4 = irToDie d4Val initIr
+        initD4Remainder = toRemainder d4Val initIr initD4
+        initD4RemainderExact = toRemainderExact d4Val initIr initD4
 
         coinVal = 2
         initCoin = irToDie coinVal initIr
@@ -90,7 +109,7 @@ init _ =
             , remainderExact = initD20RemainderExact
             , val = d20Val
             }
-        , d6 =
+        , dice =
             { title = "Six-sided Dice Rolls"
             , whole = toWhole initD6
             , remainder = initD6Remainder
@@ -103,6 +122,34 @@ init _ =
             , remainder = initD12Remainder
             , remainderExact = initD12RemainderExact
             , val = d12Val
+            }
+        , d10 =
+            { title = "D10"
+            , whole = toWhole initD10
+            , remainder = initD10Remainder
+            , remainderExact = initD10RemainderExact
+            , val = d10Val
+            }
+        , d8 =
+            { title = "D8"
+            , whole = toWhole initD8
+            , remainder = initD8Remainder
+            , remainderExact = initD8RemainderExact
+            , val = d8Val
+            }
+        , d6 =
+            { title = "D6"
+            , whole = toWhole initD6
+            , remainder = initD6Remainder
+            , remainderExact = initD6RemainderExact
+            , val = d6Val
+            }
+        , d4 =
+            { title = "D4"
+            , whole = toWhole initD4
+            , remainder = initD4Remainder
+            , remainderExact = initD4RemainderExact
+            , val = d4Val
             }
         , coin =
             { title = "Coin Flips"
@@ -209,17 +256,35 @@ update msg model =
                 newD20Remainder = toRemainder (toFloat model.d20.val) newIr newD20
                 newD20RemainderExact = toRemainderExact (toFloat model.d20.val) newIr newD20
         
+                oldD12 = model.d12
+                newD12 = irToDie model.d12.val newIr
+                newD12Whole = toWhole newD12
+                newD12Remainder = toRemainder (toFloat model.d12.val) newIr newD12
+                newD12RemainderExact = toRemainderExact (toFloat model.d12.val) newIr newD12
+
+                oldD10 = model.d10
+                newD10 = irToDie model.d10.val newIr
+                newD10Whole = toWhole newD10
+                newD10Remainder = toRemainder (toFloat model.d10.val) newIr newD10
+                newD10RemainderExact = toRemainderExact (toFloat model.d10.val) newIr newD10
+
+                oldD8 = model.d8
+                newD8 = irToDie model.d8.val newIr
+                newD8Whole = toWhole newD8
+                newD8Remainder = toRemainder (toFloat model.d8.val) newIr newD8
+                newD8RemainderExact = toRemainderExact (toFloat model.d8.val) newIr newD8
+
                 oldD6 = model.d6
                 newD6 = irToDie model.d6.val newIr
                 newD6Whole = toWhole newD6
                 newD6Remainder = toRemainder (toFloat model.d6.val) newIr newD6
                 newD6RemainderExact = toRemainderExact (toFloat model.d6.val) newIr newD6
 
-                oldD12 = model.d12
-                newD12 = irToDie model.d12.val newIr
-                newD12Whole = toWhole newD12
-                newD12Remainder = toRemainder (toFloat model.d12.val) newIr newD12
-                newD12RemainderExact = toRemainderExact (toFloat model.d12.val) newIr newD12
+                oldD4 = model.d4
+                newD4 = irToDie model.d4.val newIr
+                newD4Whole = toWhole newD4
+                newD4Remainder = toRemainder (toFloat model.d4.val) newIr newD4
+                newD4RemainderExact = toRemainderExact (toFloat model.d4.val) newIr newD4
 
                 oldCoin = model.coin
                 newCoin = irToDie model.coin.val newIr
@@ -237,7 +302,7 @@ update msg model =
                 , remainder = newD20Remainder
                 , remainderExact = newD20RemainderExact
                 } 
-            , d6 = { oldD6
+            , dice = { oldD6
                 | whole = newD6Whole
                 , remainder = newD6Remainder
                 , remainderExact = newD6RemainderExact
@@ -246,6 +311,26 @@ update msg model =
                 | whole = newD12Whole
                 , remainder = newD12Remainder
                 , remainderExact = newD12RemainderExact
+                } 
+            , d10 = { oldD10
+                | whole = newD10Whole
+                , remainder = newD10Remainder
+                , remainderExact = newD10RemainderExact
+                } 
+            , d8 = { oldD8
+                | whole = newD8Whole
+                , remainder = newD8Remainder
+                , remainderExact = newD8RemainderExact
+                } 
+            , d6 = { oldD6
+                | whole = newD6Whole
+                , remainder = newD6Remainder
+                , remainderExact = newD6RemainderExact
+                } 
+            , d4 = { oldD4
+                | whole = newD4Whole
+                , remainder = newD4Remainder
+                , remainderExact = newD4RemainderExact
                 } 
             , coin = { oldCoin
                 | whole = newCoinWhole
@@ -271,25 +356,30 @@ view : Model -> Html Msg
 view model =
     div [ class "main", class "wide", class "tall", class "col" ]
         [ h1 [] [ text <| titleText model.oneIn ]
+        , div
+            [ class "item"
+            , class "input-item"
+            , class "row"
+            , class <| case model.inputError of
+                AllGood -> "good-input"
+                EmptyInput -> "empty-input"
+                NotANumber -> "bad-input"
+                LessThanOne -> "less-than-one-input"
+         ]
+            [ h2 [] [ text "1" ]
+            , span [] [ text "in"]
+            , input [ autofocus True, placeholder "Enter a number...", value model.input, onInput ChangeOneIn] []
+        ] 
         , div [ class "item-container" ]
-            [ div
-                [ class "item"
-                , class "row"
-                , class <| case model.inputError of
-                    AllGood -> "good-input"
-                    EmptyInput -> "empty-input"
-                    NotANumber -> "bad-input"
-                    LessThanOne -> "less-than-one-input"
-             ]
-                [ h2 [] [ text "1" ]
-                , span [] [ text "in"]
-                , input [ placeholder "Enter a number...", value model.input, onInput ChangeOneIn] []
-            ] 
-            , percentView model.percent model.inputError
+            [ percentView model.percent model.inputError
             , coinView model.coin model.inputError
-            , diceView model.d6 model.inputError
+            , diceView model.dice model.inputError
             , diceView model.d20 model.inputError
             , diceView model.d12 model.inputError
+            , diceView model.d10 model.inputError
+            , diceView model.d8 model.inputError
+            , diceView model.d6 model.inputError
+            , diceView model.d4 model.inputError
             ]
         , p [class "warning"]
             [b [][text "Warning"]
@@ -387,7 +477,7 @@ percentView str err =
 
 percentViewGood : String -> Html Msg
 percentViewGood str =
-    div [ class "item"]
+    div [ class "item", class "percent"]
     [ h3 [] [ text "Percent" ]
     , p []
         [ b [] [ text <| str ++ "%" ]
@@ -397,7 +487,7 @@ percentViewGood str =
 
 percentViewBad : Html Msg
 percentViewBad =
-    div [ class "item", class "not-applicable" ]
+    div [ class "item", class"percent", class "not-applicable" ]
     [ h3 [] [ text "Percent" ]
     , p [][ text inputNotApplicable ]
     ]
