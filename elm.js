@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ag.Q === region.ao.Q)
+	if (region.ag.R === region.ao.R)
 	{
-		return 'on line ' + region.ag.Q;
+		return 'on line ' + region.ag.R;
 	}
-	return 'on lines ' + region.ag.Q + ' through ' + region.ao.Q;
+	return 'on lines ' + region.ag.R + ' through ' + region.ao.R;
 }
 
 
@@ -5155,8 +5155,8 @@ var $elm$core$Task$perform = F2(
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$AllGood = 0;
 var $elm$core$String$fromFloat = _String_fromNumber;
-var $author$project$Main$initialInput = '80';
-var $author$project$Main$initialInterRep = 80.0;
+var $author$project$Main$initialInput = '2';
+var $author$project$Main$initialInterRep = 2.0;
 var $author$project$Main$irToDie = F2(
 	function (dieMax, num) {
 		return A2($elm$core$Basics$logBase, dieMax, num);
@@ -5281,7 +5281,7 @@ var $author$project$Main$init = function (_v0) {
 				c: d8Val,
 				g: $author$project$Main$toWhole(initD8)
 			},
-			V: {
+			Q: {
 				h: initD6Remainder,
 				f: initD6RemainderExact,
 				p: 'Six-sided Dice Rolls',
@@ -5310,6 +5310,7 @@ var $elm$core$String$toFloat = _String_toFloat;
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		var newNumber = msg;
+		var oldDice = model.Q;
 		var oldD8 = model.E;
 		var oldD6 = model.D;
 		var oldD4 = model.C;
@@ -5391,8 +5392,8 @@ var $author$project$Main$update = F2(
 					E: _Utils_update(
 						oldD8,
 						{h: newD8Remainder, f: newD8RemainderExact, g: newD8Whole}),
-					V: _Utils_update(
-						oldD6,
+					Q: _Utils_update(
+						oldDice,
 						{h: newD6Remainder, f: newD6RemainderExact, g: newD6Whole}),
 					W: newInput,
 					n: newInputError,
@@ -5800,7 +5801,7 @@ var $author$project$Main$view = function (model) {
 					[
 						A2($author$project$Main$percentView, model.Y, model.n),
 						A2($author$project$Main$coinView, model.y, model.n),
-						A2($author$project$Main$diceView, model.V, model.n),
+						A2($author$project$Main$diceView, model.Q, model.n),
 						A2($author$project$Main$diceView, model.B, model.n),
 						A2($author$project$Main$diceView, model.A, model.n),
 						A2($author$project$Main$diceView, model.z, model.n),

@@ -163,10 +163,10 @@ init _ =
     )
 
 initialInterRep : Float
-initialInterRep = 80.0
+initialInterRep = 2.0
 
 initialInput : String
-initialInput = "80"
+initialInput = "2"
 
 
 irToOneIn : Float -> Float
@@ -275,6 +275,7 @@ update msg model =
                 newD8RemainderExact = toRemainderExact (toFloat model.d8.val) newIr newD8
 
                 oldD6 = model.d6
+                oldDice = model.dice
                 newD6 = irToDie model.d6.val newIr
                 newD6Whole = toWhole newD6
                 newD6Remainder = toRemainder (toFloat model.d6.val) newIr newD6
@@ -302,7 +303,7 @@ update msg model =
                 , remainder = newD20Remainder
                 , remainderExact = newD20RemainderExact
                 } 
-            , dice = { oldD6
+            , dice = { oldDice
                 | whole = newD6Whole
                 , remainder = newD6Remainder
                 , remainderExact = newD6RemainderExact
