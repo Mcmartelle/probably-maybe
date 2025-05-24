@@ -37,6 +37,11 @@ type alias Model =
     , d6 : Die
     , d4 : Die
     , coin : Die
+    , o50 : Occurrence
+    , o80 : Occurrence
+    , o90 : Occurrence
+    , o95 : Occurrence
+    , o99 : Occurrence
     }
 
 type alias Die =
@@ -47,10 +52,19 @@ type alias Die =
     , val : Int
     }
 
+type alias Occurrence =
+    { title : String
+    , rolls : String
+    , rollsRoundUp : String
+    , rollsExact : Bool
+    , chance : Float
+    }
+
 type InputError
     = AllGood
     | EmptyInput
     | LessThanOne
+    | ExactlyOne
     | NotANumber
 
 
@@ -96,6 +110,31 @@ init _ =
         initCoin = irToDie coinVal initIr
         initCoinRemainder = toRemainder coinVal initIr initCoin
         initCoinRemainderExact = toRemainderExact coinVal initIr initCoin
+
+        o50Chance = 0.5
+        initO50Rolls = toRolls o50Chance initIr
+        initO50RollsRoundUp = toRollsRoundUp o50Chance initIr
+        initO50RollsExact = toRollsExact o50Chance initIr
+        
+        o80Chance = 0.8
+        initO80Rolls = toRolls o80Chance initIr
+        initO80RollsRoundUp = toRollsRoundUp o80Chance initIr
+        initO80RollsExact = toRollsExact o80Chance initIr
+        
+        o90Chance = 0.9
+        initO90Rolls = toRolls o90Chance initIr
+        initO90RollsRoundUp = toRollsRoundUp o90Chance initIr
+        initO90RollsExact = toRollsExact o90Chance initIr
+        
+        o95Chance = 0.95
+        initO95Rolls = toRolls o95Chance initIr
+        initO95RollsRoundUp = toRollsRoundUp o95Chance initIr
+        initO95RollsExact = toRollsExact o95Chance initIr
+        
+        o99Chance = 0.99
+        initO99Rolls = toRolls o99Chance initIr
+        initO99RollsRoundUp = toRollsRoundUp o99Chance initIr
+        initO99RollsExact = toRollsExact o99Chance initIr
         
     in
     (   { input = initialInput
@@ -158,12 +197,48 @@ init _ =
             , remainderExact = initCoinRemainderExact
             , val = coinVal
             }
+        , o50 =
+            { title = "50%"
+            , rolls = initO50Rolls
+            , rollsRoundUp = initO50RollsRoundUp
+            , rollsExact = initO50RollsExact
+            , chance = o50Chance
+            }
+        , o80 =
+            { title = "80%"
+            , rolls = initO80Rolls
+            , rollsRoundUp = initO80RollsRoundUp
+            , rollsExact = initO80RollsExact
+            , chance = o80Chance
+            }
+        , o90 =
+            { title = "90%"
+            , rolls = initO90Rolls
+            , rollsRoundUp = initO90RollsRoundUp
+            , rollsExact = initO90RollsExact
+            , chance = o90Chance
+            }
+        , o95 =
+            { title = "95%"
+            , rolls = initO95Rolls
+            , rollsRoundUp = initO95RollsRoundUp
+            , rollsExact = initO95RollsExact
+            , chance = o95Chance
+            }
+        , o99 =
+            { title = "99%"
+            , rolls = initO99Rolls
+            , rollsRoundUp = initO99RollsRoundUp
+            , rollsExact = initO99RollsExact
+            , chance = o99Chance
+            }
         }
     , Cmd.none
     )
 
 initialInterRep : Float
 initialInterRep = 2.0
+
 
 initialInput : String
 initialInput = "2"
@@ -177,15 +252,13 @@ irToOneIn num =
 oneInToIr : Float -> Float
 oneInToIr num = 
     num
-    
-
 
 
 toWhole : Float -> String 
 toWhole num =
     floor num
     |> String.fromInt
-    
+
 
 toRemainder : Float -> Float -> Float -> String 
 toRemainder diceTotal oneIn logVal =
@@ -200,7 +273,8 @@ toRemainder diceTotal oneIn logVal =
         remainder = if remainderFloored == 0 && isRemainderWhole then 0 else remainderFloored + 1
     in
         String.fromInt remainder
-        
+
+
 toRemainderExact : Float -> Float -> Float -> Bool
 toRemainderExact diceTotal oneIn logVal =
     let
@@ -217,9 +291,39 @@ isWholeNumber : Float -> Bool
 isWholeNumber num =
     ( num - ( toFloat ( floor num ) ) ) == 0
 
+
 irToDie : Int -> Float -> Float
 irToDie dieMax num =
     logBase (toFloat dieMax)  num
+
+
+toRollsFloat : Float -> Float -> Float
+toRollsFloat chance oneIn =
+    let
+        lnChance = logBase e (1 - chance)
+        lnOneIn = logBase e (1 - (1 / oneIn))
+    in
+        lnChance / lnOneIn
+
+
+toRolls : Float -> Float -> String
+toRolls chance oneIn =
+    String.fromFloat <| toRollsFloat chance oneIn
+
+
+toRollsRoundUp : Float -> Float -> String
+toRollsRoundUp chance oneIn =
+    toRollsFloat chance oneIn
+    |> ceiling
+    |> String.fromInt
+
+
+toRollsExact : Float -> Float -> Bool
+toRollsExact chance oneIn =
+    toRollsFloat chance oneIn
+    |> isWholeNumber
+
+        
 
 
 -- UPDATE
@@ -242,7 +346,9 @@ update msg model =
                         -1
                 newInputError = case String.toFloat newNumber of
                     Just num ->
-                        if num < 1 then LessThanOne else AllGood
+                        if num < 1 then LessThanOne
+                        else if num == 1 then ExactlyOne
+                        else AllGood
                     Nothing ->
                         if String.length newNumber == 0 then EmptyInput else NotANumber
 
@@ -292,6 +398,32 @@ update msg model =
                 newCoinWhole = toWhole newCoin
                 newCoinRemainder = toRemainder (toFloat model.coin.val) newIr newCoin
                 newCoinRemainderExact = toRemainderExact (toFloat model.coin.val) newIr newCoin
+
+                oldO50 = model.o50
+                newO50Rolls = toRolls model.o50.chance newIr
+                newO50RollsRoundUp = toRollsRoundUp model.o50.chance newIr
+                newO50RollsExact = toRollsExact model.o50.chance newIr
+                 
+                oldO80 = model.o80
+                newO80Rolls = toRolls model.o80.chance newIr
+                newO80RollsRoundUp = toRollsRoundUp model.o80.chance newIr
+                newO80RollsExact = toRollsExact model.o80.chance newIr
+                 
+                oldO90 = model.o90
+                newO90Rolls = toRolls model.o90.chance newIr
+                newO90RollsRoundUp = toRollsRoundUp model.o90.chance newIr
+                newO90RollsExact = toRollsExact model.o90.chance newIr
+                 
+                oldO95 = model.o95
+                newO95Rolls = toRolls model.o95.chance newIr
+                newO95RollsRoundUp = toRollsRoundUp model.o95.chance newIr
+                newO95RollsExact = toRollsExact model.o95.chance newIr
+                 
+                oldO99 = model.o99
+                newO99Rolls = toRolls model.o99.chance newIr
+                newO99RollsRoundUp = toRollsRoundUp model.o99.chance newIr
+                newO99RollsExact = toRollsExact model.o99.chance newIr
+                 
             in
             ( { model
             | input = newInput
@@ -338,6 +470,31 @@ update msg model =
                 , remainder = newCoinRemainder
                 , remainderExact = newCoinRemainderExact
                 } 
+            , o50 = { oldO50
+                | rolls = newO50Rolls
+                , rollsRoundUp = newO50RollsRoundUp
+                , rollsExact = newO50RollsExact
+                }
+            , o80 = { oldO80
+                | rolls = newO80Rolls
+                , rollsRoundUp = newO80RollsRoundUp
+                , rollsExact = newO80RollsExact
+                }
+            , o90 = { oldO90
+                | rolls = newO90Rolls
+                , rollsRoundUp = newO90RollsRoundUp
+                , rollsExact = newO90RollsExact
+                }
+            , o95 = { oldO95
+                | rolls = newO95Rolls
+                , rollsRoundUp = newO95RollsRoundUp
+                , rollsExact = newO95RollsExact
+                }
+            , o99 = { oldO99
+                | rolls = newO99Rolls
+                , rollsRoundUp = newO99RollsRoundUp
+                , rollsExact = newO99RollsExact
+                }
             }, Cmd.none )
 
 
@@ -366,6 +523,7 @@ view model =
                 EmptyInput -> "empty-input"
                 NotANumber -> "bad-input"
                 LessThanOne -> "less-than-one-input"
+                ExactlyOne -> "input-exactly-one"
          ]
             [ h2 [] [ text "1" ]
             , span [] [ text "in"]
@@ -381,6 +539,11 @@ view model =
             , diceView model.d8 model.inputError
             , diceView model.d6 model.inputError
             , diceView model.d4 model.inputError
+            , occurrenceView model.o50 model.inputError
+            , occurrenceView model.o80 model.inputError
+            , occurrenceView model.o90 model.inputError
+            , occurrenceView model.o95 model.inputError
+            , occurrenceView model.o99 model.inputError
             ]
         , p [class "warning"]
             [b [][text "Warning"]
@@ -471,6 +634,9 @@ percentView str err =
         LessThanOne -> 
             percentViewGood str
 
+        ExactlyOne -> 
+            percentViewGood str
+
         _ ->
             percentViewBad
 
@@ -492,6 +658,38 @@ percentViewBad =
     [ h3 [] [ text "Percent" ]
     , p [][ text inputNotApplicable ]
     ]
+
+
+occurrenceView : Occurrence -> InputError -> Html Msg
+occurrenceView occ err =
+    case err of
+        AllGood ->
+            let 
+                valText = case occ.rollsRoundUp of
+                    "1" -> "roll" 
+                    _ -> "rolls"
+            
+                showDecimal = not occ.rollsExact
+            
+                precisionText = case occ.rollsExact of
+                    True -> "exactly to reach a"
+                    False -> "to reach a"
+
+            in
+            div [ class "item"]
+            [ h3 [] [ text occ.title ]
+            , p []
+                [ b [] [ text occ.rollsRoundUp ]
+                , span [] [ text <| " " ++ valText ++ " " ++ precisionText ++ " " ++ occ.title ++ " chance of at least one occurrence "]
+                , if showDecimal then span [][ text <| "(" ++ occ.rolls ++ ")" ] else span[][]
+                ]
+            ]
+        _ -> 
+            div [ class "item", class "not-applicable"]
+            [ h3 [] [ text occ.title ]
+            , p [][ text inputNotApplicable ]
+            ]
+
 
 inputNotApplicable : String
 inputNotApplicable =

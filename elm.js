@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ag.R === region.ao.R)
+	if (region.ap._ === region.ax._)
 	{
-		return 'on line ' + region.ag.R;
+		return 'on line ' + region.ap._;
 	}
-	return 'on lines ' + region.ag.R + ' through ' + region.ao.R;
+	return 'on lines ' + region.ap._ + ' through ' + region.ax._;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.be,
-		impl.bu,
-		impl.bs,
+		impl.bn,
+		impl.bD,
+		impl.bB,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		F: func(record.F),
-		ah: record.ah,
-		ad: record.ad
+		J: func(record.J),
+		aq: record.aq,
+		am: record.am
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.F;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ah;
+		var message = !tag ? value : tag < 3 ? value.a : value.J;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aq;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.ad) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.am) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.be,
-		impl.bu,
-		impl.bs,
+		impl.bn,
+		impl.bD,
+		impl.bB,
 		function(sendToApp, initialModel) {
-			var view = impl.bv;
+			var view = impl.bE;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.be,
-		impl.bu,
-		impl.bs,
+		impl.bn,
+		impl.bD,
+		impl.bB,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.af && impl.af(sendToApp)
-			var view = impl.bv;
+			var divertHrefToApp = impl.ao && impl.ao(sendToApp)
+			var view = impl.bE;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.a5);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.be);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.p) && (_VirtualDom_doc.title = title = doc.p);
+				(title !== doc.f) && (_VirtualDom_doc.title = title = doc.f);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.bj;
-	var onUrlRequest = impl.bk;
+	var onUrlChange = impl.bs;
+	var onUrlRequest = impl.bt;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		af: function(sendToApp)
+		ao: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aJ === next.aJ
-							&& curr.aw === next.aw
-							&& curr.aF.a === next.aF.a
+							&& curr.aS === next.aS
+							&& curr.aF === next.aF
+							&& curr.aO.a === next.aO.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		be: function(flags)
+		bn: function(flags)
 		{
-			return A3(impl.be, flags, _Browser_getUrl(), key);
+			return A3(impl.bn, flags, _Browser_getUrl(), key);
 		},
-		bv: impl.bv,
-		bu: impl.bu,
-		bs: impl.bs
+		bE: impl.bE,
+		bD: impl.bD,
+		bB: impl.bB
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bb: 'hidden', a6: 'visibilitychange' }
+		? { bk: 'hidden', bf: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bb: 'mozHidden', a6: 'mozvisibilitychange' }
+		? { bk: 'mozHidden', bf: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bb: 'msHidden', a6: 'msvisibilitychange' }
+		? { bk: 'msHidden', bf: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bb: 'webkitHidden', a6: 'webkitvisibilitychange' }
-		: { bb: 'hidden', a6: 'visibilitychange' };
+		? { bk: 'webkitHidden', bf: 'webkitvisibilitychange' }
+		: { bk: 'hidden', bf: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aR: _Browser_getScene(),
-		aZ: {
-			a$: _Browser_window.pageXOffset,
-			a0: _Browser_window.pageYOffset,
-			a_: _Browser_doc.documentElement.clientWidth,
-			au: _Browser_doc.documentElement.clientHeight
+		a_: _Browser_getScene(),
+		a6: {
+			a8: _Browser_window.pageXOffset,
+			a9: _Browser_window.pageYOffset,
+			a7: _Browser_doc.documentElement.clientWidth,
+			aD: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		a_: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		au: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		a7: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aD: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aR: {
-				a_: node.scrollWidth,
-				au: node.scrollHeight
+			a_: {
+				a7: node.scrollWidth,
+				aD: node.scrollHeight
 			},
-			aZ: {
-				a$: node.scrollLeft,
-				a0: node.scrollTop,
-				a_: node.clientWidth,
-				au: node.clientHeight
+			a6: {
+				a8: node.scrollLeft,
+				a9: node.scrollTop,
+				a7: node.clientWidth,
+				aD: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aR: _Browser_getScene(),
-			aZ: {
-				a$: x,
-				a0: y,
-				a_: _Browser_doc.documentElement.clientWidth,
-				au: _Browser_doc.documentElement.clientHeight
+			a_: _Browser_getScene(),
+			a6: {
+				a8: x,
+				a9: y,
+				a7: _Browser_doc.documentElement.clientWidth,
+				aD: _Browser_doc.documentElement.clientHeight
 			},
-			a9: {
-				a$: x + rect.left,
-				a0: y + rect.top,
-				a_: rect.width,
-				au: rect.height
+			bi: {
+				a8: x + rect.left,
+				a9: y + rect.top,
+				a7: rect.width,
+				aD: rect.height
 			}
 		};
 	});
@@ -4776,25 +4776,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.i) {
+		if (!builder.k) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.k),
+				$elm$core$Elm$JsArray$length(builder.n),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.k);
+				builder.n);
 		} else {
-			var treeLen = builder.i * $elm$core$Array$branchFactor;
+			var treeLen = builder.k * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.l) : builder.l;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.i);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.o) : builder.o;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.k);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.k) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.n) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.k);
+				builder.n);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4807,7 +4807,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{l: nodeList, i: (len / $elm$core$Array$branchFactor) | 0, k: tail});
+					{o: nodeList, k: (len / $elm$core$Array$branchFactor) | 0, n: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4874,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {as: fragment, aw: host, aD: path, aF: port_, aJ: protocol, aK: query};
+		return {aB: fragment, aF: host, aM: path, aO: port_, aS: protocol, aT: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5194,13 +5194,56 @@ var $author$project$Main$toRemainderExact = F3(
 		var remainder = (remainderTotal * val) / oneIn;
 		return $author$project$Main$isWholeNumber(remainder);
 	});
+var $elm$core$Basics$e = _Basics_e;
+var $author$project$Main$toRollsFloat = F2(
+	function (chance, oneIn) {
+		var lnOneIn = A2($elm$core$Basics$logBase, $elm$core$Basics$e, 1 - (1 / oneIn));
+		var lnChance = A2($elm$core$Basics$logBase, $elm$core$Basics$e, 1 - chance);
+		return lnChance / lnOneIn;
+	});
+var $author$project$Main$toRolls = F2(
+	function (chance, oneIn) {
+		return $elm$core$String$fromFloat(
+			A2($author$project$Main$toRollsFloat, chance, oneIn));
+	});
+var $author$project$Main$toRollsExact = F2(
+	function (chance, oneIn) {
+		return $author$project$Main$isWholeNumber(
+			A2($author$project$Main$toRollsFloat, chance, oneIn));
+	});
+var $author$project$Main$toRollsRoundUp = F2(
+	function (chance, oneIn) {
+		return $elm$core$String$fromInt(
+			$elm$core$Basics$ceiling(
+				A2($author$project$Main$toRollsFloat, chance, oneIn)));
+	});
 var $author$project$Main$toWhole = function (num) {
 	return $elm$core$String$fromInt(
 		$elm$core$Basics$floor(num));
 };
 var $author$project$Main$init = function (_v0) {
+	var o99Chance = 0.99;
+	var o95Chance = 0.95;
+	var o90Chance = 0.9;
+	var o80Chance = 0.8;
+	var o50Chance = 0.5;
 	var initOneIn = $author$project$Main$initialInterRep;
 	var initIr = $author$project$Main$oneInToIr(initOneIn);
+	var initO50Rolls = A2($author$project$Main$toRolls, o50Chance, initIr);
+	var initO50RollsExact = A2($author$project$Main$toRollsExact, o50Chance, initIr);
+	var initO50RollsRoundUp = A2($author$project$Main$toRollsRoundUp, o50Chance, initIr);
+	var initO80Rolls = A2($author$project$Main$toRolls, o80Chance, initIr);
+	var initO80RollsExact = A2($author$project$Main$toRollsExact, o80Chance, initIr);
+	var initO80RollsRoundUp = A2($author$project$Main$toRollsRoundUp, o80Chance, initIr);
+	var initO90Rolls = A2($author$project$Main$toRolls, o90Chance, initIr);
+	var initO90RollsExact = A2($author$project$Main$toRollsExact, o90Chance, initIr);
+	var initO90RollsRoundUp = A2($author$project$Main$toRollsRoundUp, o90Chance, initIr);
+	var initO95Rolls = A2($author$project$Main$toRolls, o95Chance, initIr);
+	var initO95RollsExact = A2($author$project$Main$toRollsExact, o95Chance, initIr);
+	var initO95RollsRoundUp = A2($author$project$Main$toRollsRoundUp, o95Chance, initIr);
+	var initO99Rolls = A2($author$project$Main$toRolls, o99Chance, initIr);
+	var initO99RollsExact = A2($author$project$Main$toRollsExact, o99Chance, initIr);
+	var initO99RollsRoundUp = A2($author$project$Main$toRollsRoundUp, o99Chance, initIr);
 	var initPercent = $elm$core$String$fromFloat((1 / initIr) * 100);
 	var d8Val = 8;
 	var initD8 = A2($author$project$Main$irToDie, d8Val, initIr);
@@ -5232,66 +5275,71 @@ var $author$project$Main$init = function (_v0) {
 	var initCoinRemainderExact = A3($author$project$Main$toRemainderExact, coinVal, initIr, initCoin);
 	return _Utils_Tuple2(
 		{
-			y: {
-				h: initCoinRemainder,
-				f: initCoinRemainderExact,
-				p: 'Coin Flips',
-				c: coinVal,
-				g: $author$project$Main$toWhole(initCoin)
-			},
-			z: {
-				h: initD10Remainder,
-				f: initD10RemainderExact,
-				p: 'D10',
-				c: d10Val,
-				g: $author$project$Main$toWhole(initD10)
-			},
-			A: {
-				h: initD12Remainder,
-				f: initD12RemainderExact,
-				p: 'D12',
-				c: d12Val,
-				g: $author$project$Main$toWhole(initD12)
-			},
-			B: {
-				h: initD20Remainder,
-				f: initD20RemainderExact,
-				p: 'D20',
-				c: d20Val,
-				g: $author$project$Main$toWhole(initD20)
-			},
 			C: {
-				h: initD4Remainder,
-				f: initD4RemainderExact,
-				p: 'D4',
-				c: d4Val,
-				g: $author$project$Main$toWhole(initD4)
+				j: initCoinRemainder,
+				h: initCoinRemainderExact,
+				f: 'Coin Flips',
+				c: coinVal,
+				i: $author$project$Main$toWhole(initCoin)
 			},
 			D: {
-				h: initD6Remainder,
-				f: initD6RemainderExact,
-				p: 'D6',
-				c: d6Val,
-				g: $author$project$Main$toWhole(initD6)
+				j: initD10Remainder,
+				h: initD10RemainderExact,
+				f: 'D10',
+				c: d10Val,
+				i: $author$project$Main$toWhole(initD10)
 			},
 			E: {
-				h: initD8Remainder,
-				f: initD8RemainderExact,
-				p: 'D8',
-				c: d8Val,
-				g: $author$project$Main$toWhole(initD8)
+				j: initD12Remainder,
+				h: initD12RemainderExact,
+				f: 'D12',
+				c: d12Val,
+				i: $author$project$Main$toWhole(initD12)
 			},
-			Q: {
-				h: initD6Remainder,
-				f: initD6RemainderExact,
-				p: 'Six-sided Dice Rolls',
+			F: {
+				j: initD20Remainder,
+				h: initD20RemainderExact,
+				f: 'D20',
+				c: d20Val,
+				i: $author$project$Main$toWhole(initD20)
+			},
+			G: {
+				j: initD4Remainder,
+				h: initD4RemainderExact,
+				f: 'D4',
+				c: d4Val,
+				i: $author$project$Main$toWhole(initD4)
+			},
+			H: {
+				j: initD6Remainder,
+				h: initD6RemainderExact,
+				f: 'D6',
 				c: d6Val,
-				g: $author$project$Main$toWhole(initD6)
+				i: $author$project$Main$toWhole(initD6)
 			},
-			W: $author$project$Main$initialInput,
-			n: 0,
-			X: $author$project$Main$irToOneIn($author$project$Main$initialInterRep),
-			Y: initPercent
+			I: {
+				j: initD8Remainder,
+				h: initD8RemainderExact,
+				f: 'D8',
+				c: d8Val,
+				i: $author$project$Main$toWhole(initD8)
+			},
+			Z: {
+				j: initD6Remainder,
+				h: initD6RemainderExact,
+				f: 'Six-sided Dice Rolls',
+				c: d6Val,
+				i: $author$project$Main$toWhole(initD6)
+			},
+			ae: $author$project$Main$initialInput,
+			m: 0,
+			K: {g: o50Chance, v: initO50Rolls, r: initO50RollsExact, s: initO50RollsRoundUp, f: '50%'},
+			L: {g: o80Chance, v: initO80Rolls, r: initO80RollsExact, s: initO80RollsRoundUp, f: '80%'},
+			M: {g: o90Chance, v: initO90Rolls, r: initO90RollsExact, s: initO90RollsRoundUp, f: '90%'},
+			N: {g: o95Chance, v: initO95Rolls, r: initO95RollsExact, s: initO95RollsRoundUp, f: '95%'},
+			O: {g: o99Chance, v: initO99Rolls, r: initO99RollsExact, s: initO99RollsRoundUp, f: '99%'},
+			af: $author$project$Main$irToOneIn($author$project$Main$initialInterRep),
+			ag: initPercent
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -5301,8 +5349,9 @@ var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Main$EmptyInput = 1;
+var $author$project$Main$ExactlyOne = 3;
 var $author$project$Main$LessThanOne = 2;
-var $author$project$Main$NotANumber = 3;
+var $author$project$Main$NotANumber = 4;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
@@ -5310,14 +5359,19 @@ var $elm$core$String$toFloat = _String_toFloat;
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		var newNumber = msg;
-		var oldDice = model.Q;
-		var oldD8 = model.E;
-		var oldD6 = model.D;
-		var oldD4 = model.C;
-		var oldD20 = model.B;
-		var oldD12 = model.A;
-		var oldD10 = model.z;
-		var oldCoin = model.y;
+		var oldO99 = model.O;
+		var oldO95 = model.N;
+		var oldO90 = model.M;
+		var oldO80 = model.L;
+		var oldO50 = model.K;
+		var oldDice = model.Z;
+		var oldD8 = model.I;
+		var oldD6 = model.H;
+		var oldD4 = model.G;
+		var oldD20 = model.F;
+		var oldD12 = model.E;
+		var oldD10 = model.D;
+		var oldCoin = model.C;
 		var newOneIn = function () {
 			var _v2 = $elm$core$String$toFloat(newNumber);
 			if (!_v2.$) {
@@ -5328,77 +5382,107 @@ var $author$project$Main$update = F2(
 			}
 		}();
 		var newIr = $author$project$Main$oneInToIr(newOneIn);
+		var newO50Rolls = A2($author$project$Main$toRolls, model.K.g, newIr);
+		var newO50RollsExact = A2($author$project$Main$toRollsExact, model.K.g, newIr);
+		var newO50RollsRoundUp = A2($author$project$Main$toRollsRoundUp, model.K.g, newIr);
+		var newO80Rolls = A2($author$project$Main$toRolls, model.L.g, newIr);
+		var newO80RollsExact = A2($author$project$Main$toRollsExact, model.L.g, newIr);
+		var newO80RollsRoundUp = A2($author$project$Main$toRollsRoundUp, model.L.g, newIr);
+		var newO90Rolls = A2($author$project$Main$toRolls, model.M.g, newIr);
+		var newO90RollsExact = A2($author$project$Main$toRollsExact, model.M.g, newIr);
+		var newO90RollsRoundUp = A2($author$project$Main$toRollsRoundUp, model.M.g, newIr);
+		var newO95Rolls = A2($author$project$Main$toRolls, model.N.g, newIr);
+		var newO95RollsExact = A2($author$project$Main$toRollsExact, model.N.g, newIr);
+		var newO95RollsRoundUp = A2($author$project$Main$toRollsRoundUp, model.N.g, newIr);
+		var newO99Rolls = A2($author$project$Main$toRolls, model.O.g, newIr);
+		var newO99RollsExact = A2($author$project$Main$toRollsExact, model.O.g, newIr);
+		var newO99RollsRoundUp = A2($author$project$Main$toRollsRoundUp, model.O.g, newIr);
 		var newPercent = $elm$core$String$fromFloat((1 / newIr) * 100);
 		var newInputError = function () {
 			var _v1 = $elm$core$String$toFloat(newNumber);
 			if (!_v1.$) {
 				var num = _v1.a;
-				return (num < 1) ? 2 : 0;
+				return (num < 1) ? 2 : ((num === 1) ? 3 : 0);
 			} else {
-				return (!$elm$core$String$length(newNumber)) ? 1 : 3;
+				return (!$elm$core$String$length(newNumber)) ? 1 : 4;
 			}
 		}();
 		var newInput = newNumber;
-		var newD8 = A2($author$project$Main$irToDie, model.E.c, newIr);
-		var newD8Remainder = A3($author$project$Main$toRemainder, model.E.c, newIr, newD8);
-		var newD8RemainderExact = A3($author$project$Main$toRemainderExact, model.E.c, newIr, newD8);
+		var newD8 = A2($author$project$Main$irToDie, model.I.c, newIr);
+		var newD8Remainder = A3($author$project$Main$toRemainder, model.I.c, newIr, newD8);
+		var newD8RemainderExact = A3($author$project$Main$toRemainderExact, model.I.c, newIr, newD8);
 		var newD8Whole = $author$project$Main$toWhole(newD8);
-		var newD6 = A2($author$project$Main$irToDie, model.D.c, newIr);
-		var newD6Remainder = A3($author$project$Main$toRemainder, model.D.c, newIr, newD6);
-		var newD6RemainderExact = A3($author$project$Main$toRemainderExact, model.D.c, newIr, newD6);
+		var newD6 = A2($author$project$Main$irToDie, model.H.c, newIr);
+		var newD6Remainder = A3($author$project$Main$toRemainder, model.H.c, newIr, newD6);
+		var newD6RemainderExact = A3($author$project$Main$toRemainderExact, model.H.c, newIr, newD6);
 		var newD6Whole = $author$project$Main$toWhole(newD6);
-		var newD4 = A2($author$project$Main$irToDie, model.C.c, newIr);
-		var newD4Remainder = A3($author$project$Main$toRemainder, model.C.c, newIr, newD4);
-		var newD4RemainderExact = A3($author$project$Main$toRemainderExact, model.C.c, newIr, newD4);
+		var newD4 = A2($author$project$Main$irToDie, model.G.c, newIr);
+		var newD4Remainder = A3($author$project$Main$toRemainder, model.G.c, newIr, newD4);
+		var newD4RemainderExact = A3($author$project$Main$toRemainderExact, model.G.c, newIr, newD4);
 		var newD4Whole = $author$project$Main$toWhole(newD4);
-		var newD20 = A2($author$project$Main$irToDie, model.B.c, newIr);
-		var newD20Remainder = A3($author$project$Main$toRemainder, model.B.c, newIr, newD20);
-		var newD20RemainderExact = A3($author$project$Main$toRemainderExact, model.B.c, newIr, newD20);
+		var newD20 = A2($author$project$Main$irToDie, model.F.c, newIr);
+		var newD20Remainder = A3($author$project$Main$toRemainder, model.F.c, newIr, newD20);
+		var newD20RemainderExact = A3($author$project$Main$toRemainderExact, model.F.c, newIr, newD20);
 		var newD20Whole = $author$project$Main$toWhole(newD20);
-		var newD12 = A2($author$project$Main$irToDie, model.A.c, newIr);
-		var newD12Remainder = A3($author$project$Main$toRemainder, model.A.c, newIr, newD12);
-		var newD12RemainderExact = A3($author$project$Main$toRemainderExact, model.A.c, newIr, newD12);
+		var newD12 = A2($author$project$Main$irToDie, model.E.c, newIr);
+		var newD12Remainder = A3($author$project$Main$toRemainder, model.E.c, newIr, newD12);
+		var newD12RemainderExact = A3($author$project$Main$toRemainderExact, model.E.c, newIr, newD12);
 		var newD12Whole = $author$project$Main$toWhole(newD12);
-		var newD10 = A2($author$project$Main$irToDie, model.z.c, newIr);
-		var newD10Remainder = A3($author$project$Main$toRemainder, model.z.c, newIr, newD10);
-		var newD10RemainderExact = A3($author$project$Main$toRemainderExact, model.z.c, newIr, newD10);
+		var newD10 = A2($author$project$Main$irToDie, model.D.c, newIr);
+		var newD10Remainder = A3($author$project$Main$toRemainder, model.D.c, newIr, newD10);
+		var newD10RemainderExact = A3($author$project$Main$toRemainderExact, model.D.c, newIr, newD10);
 		var newD10Whole = $author$project$Main$toWhole(newD10);
-		var newCoin = A2($author$project$Main$irToDie, model.y.c, newIr);
-		var newCoinRemainder = A3($author$project$Main$toRemainder, model.y.c, newIr, newCoin);
-		var newCoinRemainderExact = A3($author$project$Main$toRemainderExact, model.y.c, newIr, newCoin);
+		var newCoin = A2($author$project$Main$irToDie, model.C.c, newIr);
+		var newCoinRemainder = A3($author$project$Main$toRemainder, model.C.c, newIr, newCoin);
+		var newCoinRemainderExact = A3($author$project$Main$toRemainderExact, model.C.c, newIr, newCoin);
 		var newCoinWhole = $author$project$Main$toWhole(newCoin);
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
 				{
-					y: _Utils_update(
-						oldCoin,
-						{h: newCoinRemainder, f: newCoinRemainderExact, g: newCoinWhole}),
-					z: _Utils_update(
-						oldD10,
-						{h: newD10Remainder, f: newD10RemainderExact, g: newD10Whole}),
-					A: _Utils_update(
-						oldD12,
-						{h: newD12Remainder, f: newD12RemainderExact, g: newD12Whole}),
-					B: _Utils_update(
-						oldD20,
-						{h: newD20Remainder, f: newD20RemainderExact, g: newD20Whole}),
 					C: _Utils_update(
-						oldD4,
-						{h: newD4Remainder, f: newD4RemainderExact, g: newD4Whole}),
+						oldCoin,
+						{j: newCoinRemainder, h: newCoinRemainderExact, i: newCoinWhole}),
 					D: _Utils_update(
-						oldD6,
-						{h: newD6Remainder, f: newD6RemainderExact, g: newD6Whole}),
+						oldD10,
+						{j: newD10Remainder, h: newD10RemainderExact, i: newD10Whole}),
 					E: _Utils_update(
+						oldD12,
+						{j: newD12Remainder, h: newD12RemainderExact, i: newD12Whole}),
+					F: _Utils_update(
+						oldD20,
+						{j: newD20Remainder, h: newD20RemainderExact, i: newD20Whole}),
+					G: _Utils_update(
+						oldD4,
+						{j: newD4Remainder, h: newD4RemainderExact, i: newD4Whole}),
+					H: _Utils_update(
+						oldD6,
+						{j: newD6Remainder, h: newD6RemainderExact, i: newD6Whole}),
+					I: _Utils_update(
 						oldD8,
-						{h: newD8Remainder, f: newD8RemainderExact, g: newD8Whole}),
-					Q: _Utils_update(
+						{j: newD8Remainder, h: newD8RemainderExact, i: newD8Whole}),
+					Z: _Utils_update(
 						oldDice,
-						{h: newD6Remainder, f: newD6RemainderExact, g: newD6Whole}),
-					W: newInput,
-					n: newInputError,
-					X: newOneIn,
-					Y: newPercent
+						{j: newD6Remainder, h: newD6RemainderExact, i: newD6Whole}),
+					ae: newInput,
+					m: newInputError,
+					K: _Utils_update(
+						oldO50,
+						{v: newO50Rolls, r: newO50RollsExact, s: newO50RollsRoundUp}),
+					L: _Utils_update(
+						oldO80,
+						{v: newO80Rolls, r: newO80RollsExact, s: newO80RollsRoundUp}),
+					M: _Utils_update(
+						oldO90,
+						{v: newO90Rolls, r: newO90RollsExact, s: newO90RollsRoundUp}),
+					N: _Utils_update(
+						oldO95,
+						{v: newO95Rolls, r: newO95RollsExact, s: newO95RollsRoundUp}),
+					O: _Utils_update(
+						oldO99,
+						{v: newO99Rolls, r: newO99RollsExact, s: newO99RollsRoundUp}),
+					af: newOneIn,
+					ag: newPercent
 				}),
 			$elm$core$Platform$Cmd$none);
 	});
@@ -5434,16 +5518,16 @@ var $author$project$Main$coinView = F2(
 	function (die, err) {
 		if (!err) {
 			var valText = function () {
-				var _v2 = die.g;
+				var _v2 = die.i;
 				if (_v2 === '1') {
 					return '';
 				} else {
 					return '\'s in a row';
 				}
 			}();
-			var showRemainder = !((die.h === '0') && die.f);
+			var showRemainder = !((die.j === '0') && die.h);
 			var remainderText = function () {
-				var _v1 = _Utils_Tuple2(showRemainder, die.f);
+				var _v1 = _Utils_Tuple2(showRemainder, die.h);
 				if (_v1.a) {
 					if (_v1.b) {
 						return 'and then some';
@@ -5467,7 +5551,7 @@ var $author$project$Main$coinView = F2(
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text(die.p)
+								$elm$html$Html$text(die.f)
 							])),
 						A2(
 						$elm$html$Html$p,
@@ -5479,7 +5563,7 @@ var $author$project$Main$coinView = F2(
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(die.g)
+										$elm$html$Html$text(die.i)
 									])),
 								A2(
 								$elm$html$Html$span,
@@ -5505,7 +5589,7 @@ var $author$project$Main$coinView = F2(
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text(die.p)
+								$elm$html$Html$text(die.f)
 							])),
 						A2(
 						$elm$html$Html$p,
@@ -5521,16 +5605,16 @@ var $author$project$Main$diceView = F2(
 	function (die, err) {
 		if (!err) {
 			var valText = function () {
-				var _v2 = die.g;
+				var _v2 = die.i;
 				if (_v2 === '1') {
 					return '';
 				} else {
 					return '\'s in a row';
 				}
 			}();
-			var showRemainder = !((die.h === '0') && die.f);
+			var showRemainder = !((die.j === '0') && die.h);
 			var remainderText = function () {
-				var _v1 = _Utils_Tuple2(showRemainder, die.f);
+				var _v1 = _Utils_Tuple2(showRemainder, die.h);
 				if (_v1.a) {
 					if (_v1.b) {
 						return 'and a roll equal to or greater than ';
@@ -5554,7 +5638,7 @@ var $author$project$Main$diceView = F2(
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text(die.p)
+								$elm$html$Html$text(die.f)
 							])),
 						A2(
 						$elm$html$Html$p,
@@ -5566,7 +5650,7 @@ var $author$project$Main$diceView = F2(
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(die.g)
+										$elm$html$Html$text(die.i)
 									])),
 								A2(
 								$elm$html$Html$span,
@@ -5581,7 +5665,7 @@ var $author$project$Main$diceView = F2(
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$html$Html$text(die.h)
+										$elm$html$Html$text(die.j)
 									])) : A2($elm$html$Html$span, _List_Nil, _List_Nil)
 							]))
 					]));
@@ -5600,7 +5684,7 @@ var $author$project$Main$diceView = F2(
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text(die.p)
+								$elm$html$Html$text(die.f)
 							])),
 						A2(
 						$elm$html$Html$p,
@@ -5615,6 +5699,96 @@ var $author$project$Main$diceView = F2(
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$input = _VirtualDom_node('input');
+var $author$project$Main$occurrenceView = F2(
+	function (occ, err) {
+		if (!err) {
+			var valText = function () {
+				var _v2 = occ.s;
+				if (_v2 === '1') {
+					return 'roll';
+				} else {
+					return 'rolls';
+				}
+			}();
+			var showDecimal = !occ.r;
+			var precisionText = function () {
+				var _v1 = occ.r;
+				if (_v1) {
+					return 'exactly to reach a';
+				} else {
+					return 'to reach a';
+				}
+			}();
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('item')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h3,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(occ.f)
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$b,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(occ.s)
+									])),
+								A2(
+								$elm$html$Html$span,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(' ' + (valText + (' ' + (precisionText + (' ' + (occ.f + ' chance of at least one occurrence '))))))
+									])),
+								showDecimal ? A2(
+								$elm$html$Html$span,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('(' + (occ.v + ')'))
+									])) : A2($elm$html$Html$span, _List_Nil, _List_Nil)
+							]))
+					]));
+		} else {
+			return A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('item'),
+						$elm$html$Html$Attributes$class('not-applicable')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h3,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(occ.f)
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text($author$project$Main$inputNotApplicable)
+							]))
+					]));
+		}
+	});
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
@@ -5713,6 +5887,8 @@ var $author$project$Main$percentView = F2(
 				return $author$project$Main$percentViewGood(str);
 			case 2:
 				return $author$project$Main$percentViewGood(str);
+			case 3:
+				return $author$project$Main$percentViewGood(str);
 			default:
 				return $author$project$Main$percentViewBad;
 		}
@@ -5740,7 +5916,7 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$titleText(model.X))
+						$author$project$Main$titleText(model.af))
 					])),
 				A2(
 				$elm$html$Html$div,
@@ -5751,16 +5927,18 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$Attributes$class('row'),
 						$elm$html$Html$Attributes$class(
 						function () {
-							var _v0 = model.n;
+							var _v0 = model.m;
 							switch (_v0) {
 								case 0:
 									return 'good-input';
 								case 1:
 									return 'empty-input';
-								case 3:
+								case 4:
 									return 'bad-input';
-								default:
+								case 2:
 									return 'less-than-one-input';
+								default:
+									return 'input-exactly-one';
 							}
 						}())
 					]),
@@ -5786,7 +5964,7 @@ var $author$project$Main$view = function (model) {
 							[
 								$elm$html$Html$Attributes$autofocus(true),
 								$elm$html$Html$Attributes$placeholder('Enter a number...'),
-								$elm$html$Html$Attributes$value(model.W),
+								$elm$html$Html$Attributes$value(model.ae),
 								$elm$html$Html$Events$onInput($elm$core$Basics$identity)
 							]),
 						_List_Nil)
@@ -5799,15 +5977,20 @@ var $author$project$Main$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						A2($author$project$Main$percentView, model.Y, model.n),
-						A2($author$project$Main$coinView, model.y, model.n),
-						A2($author$project$Main$diceView, model.Q, model.n),
-						A2($author$project$Main$diceView, model.B, model.n),
-						A2($author$project$Main$diceView, model.A, model.n),
-						A2($author$project$Main$diceView, model.z, model.n),
-						A2($author$project$Main$diceView, model.E, model.n),
-						A2($author$project$Main$diceView, model.D, model.n),
-						A2($author$project$Main$diceView, model.C, model.n)
+						A2($author$project$Main$percentView, model.ag, model.m),
+						A2($author$project$Main$coinView, model.C, model.m),
+						A2($author$project$Main$diceView, model.Z, model.m),
+						A2($author$project$Main$diceView, model.F, model.m),
+						A2($author$project$Main$diceView, model.E, model.m),
+						A2($author$project$Main$diceView, model.D, model.m),
+						A2($author$project$Main$diceView, model.I, model.m),
+						A2($author$project$Main$diceView, model.H, model.m),
+						A2($author$project$Main$diceView, model.G, model.m),
+						A2($author$project$Main$occurrenceView, model.K, model.m),
+						A2($author$project$Main$occurrenceView, model.L, model.m),
+						A2($author$project$Main$occurrenceView, model.M, model.m),
+						A2($author$project$Main$occurrenceView, model.N, model.m),
+						A2($author$project$Main$occurrenceView, model.O, model.m)
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -5829,6 +6012,6 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{be: $author$project$Main$init, bs: $author$project$Main$subscriptions, bu: $author$project$Main$update, bv: $author$project$Main$view});
+	{bn: $author$project$Main$init, bB: $author$project$Main$subscriptions, bD: $author$project$Main$update, bE: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
